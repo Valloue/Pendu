@@ -1070,6 +1070,8 @@ class HangmanGame {
 
         // Initialisation des mots par défaut si le localStorage est vide
         this.initDefaultWords();
+        this.words = [];
+        this.loadWords();
     }
 
     initDefaultWords() {
@@ -1088,6 +1090,16 @@ class HangmanGame {
         }
     }
 
+    async loadWords() {
+        try {
+            const response = await fetch('words.json');
+            const data = await response.json();
+            this.words = data.words;
+        } catch (error) {
+            console.error('Erreur lors du chargement des mots:', error);
+        }
+    }
+
     initModal() {
         const addButton = document.querySelector('.add-btn');
         const modal = document.getElementById('addWordModal');
@@ -1102,7 +1114,6 @@ class HangmanGame {
         form.onsubmit = (e) => {
             e.preventDefault();
             
-            // Création du nouvel objet mot
             const newWord = {
                 word: document.getElementById('newWord').value.toLowerCase(),
                 hint1: document.getElementById('hint1').value,
@@ -1111,31 +1122,15 @@ class HangmanGame {
                 difficulty: document.getElementById('difficulty').value.toLowerCase()
             };
 
-            // Récupération des mots existants
-            let words = [];
-            try {
-                words = JSON.parse(localStorage.getItem('hangmanWords')) || [];
-            } catch (e) {
-                words = [];
-            }
-
-            // Ajout du nouveau mot
-            words.push(newWord);
-
-            // Sauvegarde dans le localStorage
-            try {
-                localStorage.setItem('hangmanWords', JSON.stringify(words));
-                alert('Mot ajouté avec succès!');
-                form.reset();
-                modal.style.display = 'none';
-                this.isModalOpen = false;
-            } catch (e) {
-                alert('Erreur lors de la sauvegarde du mot');
-                console.error(e);
-            }
+            // Ajouter le mot à la liste en mémoire
+            this.words.push(newWord);
+            
+            alert('Mot ajouté avec succès! (Note: Le mot sera perdu au rechargement de la page)');
+            form.reset();
+            modal.style.display = 'none';
+            this.isModalOpen = false;
         };
 
-        // Fermeture de la modal
         closeBtn.onclick = () => {
             modal.style.display = 'none';
             this.isModalOpen = false;
@@ -1151,8 +1146,7 @@ class HangmanGame {
 
     async getRandomWord() {
         try {
-            const words = JSON.parse(localStorage.getItem('hangmanWords')) || [];
-            const filteredWords = words.filter(word => 
+            const filteredWords = this.words.filter(word => 
                 word.difficulty === this.currentDifficulty.toLowerCase()
             );
 

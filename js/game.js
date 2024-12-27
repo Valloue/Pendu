@@ -1068,36 +1068,282 @@ class HangmanGame {
         this.isModalOpen = false;
         this.initModal();
 
-        // Initialisation des mots par défaut si le localStorage est vide
-        this.initDefaultWords();
-        this.words = [];
-        this.loadWords();
-    }
-
-    initDefaultWords() {
+        // Initialiser le localStorage si vide
         if (!localStorage.getItem('hangmanWords')) {
-            const defaultWords = [
-                {
-                    word: "javascript",
-                    hint1: "Langage de programmation",
-                    hint2: "Utilisé pour le web",
-                    hint3: "Fonctionne dans le navigateur",
-                    difficulty: "facile"
-                },
-                // Ajoutez d'autres mots par défaut si vous voulez
-            ];
             localStorage.setItem('hangmanWords', JSON.stringify(defaultWords));
         }
     }
 
-    async loadWords() {
-        try {
-            const response = await fetch('words.json');
-            const data = await response.json();
-            this.words = data.words;
-        } catch (error) {
-            console.error('Erreur lors du chargement des mots:', error);
+    initDifficultyButtons() {
+        const buttons = document.querySelectorAll('.difficulty-btn');
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Retire la classe selected de tous les boutons
+                buttons.forEach(btn => btn.classList.remove('selected'));
+                // Ajoute la classe selected au bouton cliqué
+                button.classList.add('selected');
+                
+                this.currentDifficulty = button.dataset.difficulty;
+                this.resetGame();
+            });
+        });
+
+        // Sélectionne le bouton intermédiaire par défaut
+        document.querySelector('[data-difficulty="intermediaire"]').classList.add('selected');
+    }
+
+    resetGame() {
+        this.guessedLetters.clear();
+        this.remainingAttempts = this.difficulties[this.currentDifficulty].attempts;
+        this.errors = 0;
+        this.init();
+        document.getElementById('attempts').textContent = this.remainingAttempts;
+        document.getElementById('usedLetters').textContent = '';
+        
+        // Réinitialisation des indices
+        this.hintsRemaining = 3;
+        const hintButton = document.getElementById('hintButton');
+        const hintText = document.getElementById('hintText');
+        
+        if (hintButton && hintText) {
+            hintButton.disabled = false;
+            hintButton.style.opacity = '1';
+            hintText.textContent = '';
+            hintText.classList.remove('visible');
         }
+    }
+
+    init() {
+        const words = this.difficulties[this.currentDifficulty].words;
+        this.word = words[Math.floor(Math.random() * words.length)];
+        this.remainingAttempts = this.difficulties[this.currentDifficulty].attempts;
+        this.createKeyboard();
+        this.updateWordDisplay();
+        this.drawHangman();
+        document.getElementById('attempts').textContent = this.remainingAttempts;
+    }
+
+    createKeyboard() {
+        const keyboard = document.querySelector('.keyboard-row');
+        keyboard.innerHTML = '';
+        
+        // Définition du layout AZERTY en 3 rangées
+        const azertyLayout = [
+            ['A', 'Z', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+            ['Q', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M'],
+            ['W', 'X', 'C', 'V', 'B', 'N']
+        ];
+
+        // Création des rangées
+        azertyLayout.forEach(row => {
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'keyboard-row';
+            
+            row.forEach(letter => {
+                const button = document.createElement('button');
+                button.className = 'key';
+                button.textContent = letter;
+                button.addEventListener('click', () => this.handleGuess(letter));
+                rowDiv.appendChild(button);
+            });
+            
+            keyboard.appendChild(rowDiv);
+        });
+    }
+
+    handleGuess(letter) {
+        if (this.guessedLetters.has(letter)) return;
+        
+        this.guessedLetters.add(letter);
+        
+        if (!this.word.includes(letter)) {
+            this.remainingAttempts--;
+            this.errors = this.difficulties[this.currentDifficulty].attempts - this.remainingAttempts;
+            this.drawHangman();
+        }
+        
+        this.updateWordDisplay();
+        this.updateGameStatus();
+    }
+
+    updateWordDisplay() {
+        const wordDisplay = document.getElementById('wordDisplay');
+        wordDisplay.textContent = this.word
+            .split('')
+            .map(letter => this.guessedLetters.has(letter) ? letter : '_')
+            .join(' ');
+    }
+
+    updateGameStatus() {
+        document.getElementById('attempts').textContent = this.remainingAttempts;
+        document.getElementById('usedLetters').textContent = Array.from(this.guessedLetters).join(', ');
+
+        if (this.remainingAttempts <= 0) {
+            setTimeout(() => {
+                alert(`Perdu ! Le mot était : ${this.word}`);
+                this.resetGame();
+            }, 500);
+        } else if (!this.word.split('').some(letter => !this.guessedLetters.has(letter))) {
+            setTimeout(() => {
+                alert('Bravo ! Vous avez gagné !');
+                this.resetGame();
+            }, 500);
+        }
+    }
+
+    initHintButton() {
+        const hintButton = document.getElementById('hintButton');
+        const hintText = document.getElementById('hintText');
+
+        if (!hintButton || !hintText) {
+            console.error('Éléments d\'indice non trouvés dans le DOM');
+            return;
+        }
+
+        // Supprime les anciens event listeners
+        hintButton.replaceWith(hintButton.cloneNode(true));
+        const newHintButton = document.getElementById('hintButton');
+
+        newHintButton.addEventListener('click', () => {
+            console.log('Bouton indice cliqué');
+            console.log('Indices restants:', this.hintsRemaining);
+            console.log('Mot actuel:', this.word);
+            
+            if (this.hintsRemaining > 0) {
+                this.hintsRemaining--;
+                const hint = this.getHint();
+                console.log('Indice obtenu:', hint);
+                
+                hintText.textContent = hint;
+                hintText.classList.add('visible');
+                
+                if (this.hintsRemaining === 0) {
+                    newHintButton.disabled = true;
+                    newHintButton.style.opacity = '0.5';
+                }
+            }
+        });
+    }
+
+    getHint() {
+        const hints = this.hints[this.currentDifficulty];
+        const wordHints = hints[this.word];
+        
+        if (!wordHints) {
+            console.log('Mot actuel:', this.word);
+            console.log('Difficulté actuelle:', this.currentDifficulty);
+            console.log('Indices disponibles:', Object.keys(hints));
+            return `Indice ${3 - this.hintsRemaining}/3 : Désolé, pas d'indice disponible pour ce mot`;
+        }
+        
+        // Utilise l'indice correspondant au nombre d'indices restants
+        const hintIndex = 2 - this.hintsRemaining; // 2,1,0 pour les trois indices
+        return `Indice ${3 - this.hintsRemaining}/3 : ${wordHints[hintIndex]}`;
+    }
+
+    drawHangman() {
+        const ctx = this.canvas.getContext('2d');
+        const width = this.canvas.width;
+        const height = this.canvas.height;
+        
+        const centerX = width / 2;
+        const startX = centerX - 80;
+        
+        ctx.clearRect(0, 0, width, height);
+        
+        // Dessin des barres de support en blanc
+        ctx.beginPath();
+        ctx.strokeStyle = '#ff2d55';
+        ctx.lineWidth = 3;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#ff2d55';
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+
+        // Base
+        if (this.errors >= 1) {
+            ctx.moveTo(startX - 60, height - 40);
+            ctx.lineTo(startX + 60, height - 40);
+        }
+        
+        // Poteau vertical
+        if (this.errors >= 2) {
+            ctx.moveTo(startX, height - 40);
+            ctx.lineTo(startX, 30);
+        }
+
+        // Barre diagonale gauche de la base
+        if (this.errors >= 3) {
+            ctx.moveTo(startX - 40, height - 40);
+            ctx.lineTo(startX, height - 80);
+        }
+        
+        // Barre diagonale droite de la base
+        if (this.errors >= 4) {
+            ctx.moveTo(startX + 40, height - 40);
+            ctx.lineTo(startX, height - 80);
+        }
+        
+        // Barre diagonale du haut
+        if (this.errors >= 5) {
+            ctx.moveTo(startX + 30, 30);
+            ctx.lineTo(startX + 0, 60);
+        }
+        
+        ctx.stroke();
+
+        // Dessin du pendu en rose
+        ctx.beginPath();
+        ctx.strokeStyle = '#ff2d55';
+        ctx.shadowColor = '#ff2d55';
+        
+        // Poutre horizontale
+        if (this.errors >= 6) {
+            ctx.moveTo(startX, 30);
+            ctx.lineTo(startX + 100, 30);
+        }
+        // Corde
+        if (this.errors >= 7) {
+            ctx.moveTo(startX + 100, 30);
+            ctx.lineTo(startX + 100, 60);
+        }
+        // Tête
+        if (this.errors >= 8) {
+            ctx.moveTo(startX + 115, 75);
+            ctx.arc(startX + 100, 75, 15, 0, Math.PI * 2);
+        }
+        // Corps
+        if (this.errors >= 9) {
+            ctx.moveTo(startX + 100, 90);
+            ctx.lineTo(startX + 100, 140);
+        }
+        // Bras gauche et droit + jambes
+        if (this.errors >= 10) {
+            // Bras gauche
+            ctx.moveTo(startX + 100, 105);
+            ctx.lineTo(startX + 70, 120);
+            // Bras droit
+            ctx.moveTo(startX + 100, 105);
+            ctx.lineTo(startX + 130, 120);
+            // Jambe gauche
+            ctx.moveTo(startX + 100, 140);
+            ctx.lineTo(startX + 70, 170);
+            // Jambe droite
+            ctx.moveTo(startX + 100, 140);
+            ctx.lineTo(startX + 130, 170);
+        }
+
+        ctx.stroke();
+    }
+
+    initKeyboardEvents() {
+        document.addEventListener('keyup', (event) => {
+            const letter = event.key.toUpperCase();
+            // Vérifie si c'est une lettre de A à Z
+            if (/^[A-Z]$/.test(letter)) {
+                this.handleGuess(letter);
+            }
+        });
     }
 
     initModal() {
@@ -1106,54 +1352,110 @@ class HangmanGame {
         const closeBtn = document.querySelector('.modal .close');
         const form = document.getElementById('addWordForm');
 
+        if (!modal || !addButton || !closeBtn || !form) {
+            console.error('Éléments de la modal non trouvés');
+            return;
+        }
+
+        // Ouvre la modal
         addButton.addEventListener('click', () => {
             modal.style.display = 'block';
             this.isModalOpen = true;
         });
 
-        form.onsubmit = (e) => {
+        // Ferme la modal
+        const closeModal = () => {
+            modal.style.display = 'none';
+            this.isModalOpen = false;
+        };
+
+        closeBtn.addEventListener('click', closeModal);
+
+        // Gestion du formulaire
+        form.addEventListener('submit', (e) => {
             e.preventDefault();
             
+            // Récupération des valeurs du formulaire
             const newWord = {
                 word: document.getElementById('newWord').value.toLowerCase(),
                 hint1: document.getElementById('hint1').value,
                 hint2: document.getElementById('hint2').value,
                 hint3: document.getElementById('hint3').value,
-                difficulty: document.getElementById('difficulty').value.toLowerCase()
+                difficulty: document.getElementById('difficulty').value
             };
 
-            // Ajouter le mot à la liste en mémoire
-            this.words.push(newWord);
-            
-            alert('Mot ajouté avec succès! (Note: Le mot sera perdu au rechargement de la page)');
-            form.reset();
-            modal.style.display = 'none';
-            this.isModalOpen = false;
-        };
+            try {
+                // Récupérer la liste existante ou créer un nouveau tableau
+                let wordsList = [];
+                const existingWords = localStorage.getItem('hangmanWords');
+                
+                if (existingWords) {
+                    wordsList = JSON.parse(existingWords);
+                }
 
-        closeBtn.onclick = () => {
-            modal.style.display = 'none';
-            this.isModalOpen = false;
-        };
+                // Ajouter le nouveau mot
+                wordsList.push(newWord);
 
-        window.onclick = (event) => {
-            if (event.target === modal) {
-                modal.style.display = 'none';
-                this.isModalOpen = false;
+                // Sauvegarder dans localStorage
+                localStorage.setItem('hangmanWords', JSON.stringify(wordsList));
+
+                // Réinitialiser le formulaire et fermer la modal
+                form.reset();
+                closeModal();
+
+                // Message de confirmation
+                alert('Mot ajouté avec succès !');
+                
+                console.log('Mots sauvegardés:', wordsList); // Pour débugger
+                
+            } catch (error) {
+                console.error('Erreur lors de la sauvegarde:', error);
+                alert('Erreur lors de l\'ajout du mot');
             }
-        };
+        });
+
+        // Fermeture en cliquant en dehors
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+    }
+
+    handleKeyPress(event) {
+        // Ne traite pas les touches si la modal est ouverte
+        if (this.isModalOpen) return;
+        
+        const letter = event.key.toUpperCase();
+        // Vérifie si c'est une lettre de A à Z
+        if (/^[A-Z]$/.test(letter)) {
+            this.handleGuess(letter);
+        }
     }
 
     async getRandomWord() {
         try {
-            const filteredWords = this.words.filter(word => 
-                word.difficulty === this.currentDifficulty.toLowerCase()
+            // Récupérer les mots du localStorage
+            const wordsString = localStorage.getItem('hangmanWords');
+            if (!wordsString) {
+                console.log('Aucun mot trouvé dans le localStorage');
+                return null;
+            }
+
+            const words = JSON.parse(wordsString);
+            console.log('Mots disponibles:', words); // Pour débugger
+
+            // Filtrer par difficulté
+            const filteredWords = words.filter(word => 
+                word.difficulty.toLowerCase() === this.currentDifficulty.toLowerCase()
             );
 
             if (filteredWords.length === 0) {
-                throw new Error(`Aucun mot disponible pour la difficulté ${this.currentDifficulty}`);
+                console.log('Aucun mot pour cette difficulté:', this.currentDifficulty);
+                return null;
             }
 
+            // Sélectionner un mot au hasard
             const randomIndex = Math.floor(Math.random() * filteredWords.length);
             return filteredWords[randomIndex];
         } catch (error) {

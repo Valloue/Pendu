@@ -37,19 +37,19 @@
             <div class="modal-content">
                 <span class="close" onclick="closeModal()">&times;</span>
                 <h2>Ajouter un nouveau mot</h2>
-                <form id="addWordForm">
-                    <input type="text" id="newWord" placeholder="Nouveau mot" required>
-                    <input type="text" id="hint1" placeholder="Premier exemple" required>
-                    <input type="text" id="hint2" placeholder="Deuxième exemple" required>
-                    <input type="text" id="hint3" placeholder="Troisième exemple" required>
-                    <select id="difficulty" required aria-label="Sélectionner le niveau de difficulté">
+                <form id="addWordForm" action="mailto:conreauvalentin@gmail.com" method="post" enctype="text/plain">
+                    <input type="text" id="newWord" name="newWord" placeholder="Nouveau mot" required>
+                    <input type="text" id="hint1" name="hint1" placeholder="Premier exemple" required>
+                    <input type="text" id="hint2" name="hint2" placeholder="Deuxième exemple" required>
+                    <input type="text" id="hint3" name="hint3" placeholder="Troisième exemple" required>
+                    <select id="difficulty" name="difficulty" required aria-label="Sélectionner le niveau de difficulté">
                         <option value="">Sélectionner le niveau</option>
                         <option value="facile">Facile</option>
                         <option value="intermediaire">Intermédiaire</option>
                         <option value="difficile">Difficile</option>
                         <option value="impossible">Impossible</option>
                     </select>
-                    <button type="submit">Sauvegarder</button>
+                    <button type="submit">Envoyer par email</button>
                 </form>
             </div>
         </div>

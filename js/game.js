@@ -1,14 +1,3 @@
-const defaultWords = [
-    {
-        word: "javascript",
-        hint1: "Langage de programmation",
-        hint2: "Utilisé pour le web",
-        hint3: "Fonctionne dans le navigateur",
-        difficulty: "facile"
-    },
-    // Ajoutez d'autres mots par défaut...
-];
-
 class HangmanGame {
     constructor() {
         this.difficulties = {
@@ -1056,7 +1045,7 @@ class HangmanGame {
                     'Le joueur est forcé de détériorer sa position'
                 ],
                 'ZYKLON': [
-                    'Pesticide tristement c��lèbre',
+                    'Pesticide tristement célèbre',
                     'Composé chimique hautement toxique',
                     'Utilisé de manière tragique pendant la Seconde Guerre mondiale'
                 ]
@@ -1067,11 +1056,6 @@ class HangmanGame {
         this.initHintButton();
         this.isModalOpen = false;
         this.initModal();
-
-        // Initialiser le localStorage si vide
-        if (!localStorage.getItem('hangmanWords')) {
-            localStorage.setItem('hangmanWords', JSON.stringify(defaultWords));
-        }
     }
 
     initDifficultyButtons() {
@@ -1371,13 +1355,17 @@ class HangmanGame {
 
         closeBtn.addEventListener('click', closeModal);
 
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
         // Gestion du formulaire
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
-            // Récupération des valeurs du formulaire
-            const newWord = {
-                word: document.getElementById('newWord').value.toLowerCase(),
+            const formData = {
+                word: document.getElementById('newWord').value,
                 hint1: document.getElementById('hint1').value,
                 hint2: document.getElementById('hint2').value,
                 hint3: document.getElementById('hint3').value,
@@ -1385,39 +1373,24 @@ class HangmanGame {
             };
 
             try {
-                // Récupérer la liste existante ou créer un nouveau tableau
-                let wordsList = [];
-                const existingWords = localStorage.getItem('hangmanWords');
-                
-                if (existingWords) {
-                    wordsList = JSON.parse(existingWords);
+                const response = await fetch('/api/words', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    alert('Mot ajouté avec succès !');
+                    form.reset();
+                    closeModal();
+                } else {
+                    alert('Erreur lors de l\'ajout du mot');
                 }
-
-                // Ajouter le nouveau mot
-                wordsList.push(newWord);
-
-                // Sauvegarder dans localStorage
-                localStorage.setItem('hangmanWords', JSON.stringify(wordsList));
-
-                // Réinitialiser le formulaire et fermer la modal
-                form.reset();
-                closeModal();
-
-                // Message de confirmation
-                alert('Mot ajouté avec succès !');
-                
-                console.log('Mots sauvegardés:', wordsList); // Pour débugger
-                
             } catch (error) {
-                console.error('Erreur lors de la sauvegarde:', error);
+                console.error('Erreur:', error);
                 alert('Erreur lors de l\'ajout du mot');
-            }
-        });
-
-        // Fermeture en cliquant en dehors
-        window.addEventListener('click', (event) => {
-            if (event.target === modal) {
-                closeModal();
             }
         });
     }
@@ -1430,37 +1403,6 @@ class HangmanGame {
         // Vérifie si c'est une lettre de A à Z
         if (/^[A-Z]$/.test(letter)) {
             this.handleGuess(letter);
-        }
-    }
-
-    async getRandomWord() {
-        try {
-            // Récupérer les mots du localStorage
-            const wordsString = localStorage.getItem('hangmanWords');
-            if (!wordsString) {
-                console.log('Aucun mot trouvé dans le localStorage');
-                return null;
-            }
-
-            const words = JSON.parse(wordsString);
-            console.log('Mots disponibles:', words); // Pour débugger
-
-            // Filtrer par difficulté
-            const filteredWords = words.filter(word => 
-                word.difficulty.toLowerCase() === this.currentDifficulty.toLowerCase()
-            );
-
-            if (filteredWords.length === 0) {
-                console.log('Aucun mot pour cette difficulté:', this.currentDifficulty);
-                return null;
-            }
-
-            // Sélectionner un mot au hasard
-            const randomIndex = Math.floor(Math.random() * filteredWords.length);
-            return filteredWords[randomIndex];
-        } catch (error) {
-            console.error('Erreur lors de la récupération du mot:', error);
-            return null;
         }
     }
 }

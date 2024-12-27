@@ -1,183 +1,618 @@
 :root {
-  --dark-bg: #0a0a0a;
-  --neon-blue: #00fff2;
-  --neon-pink: #ff2d76;
-  --neon-purple: #b537f2;
+  --neon-pink: #ff2d55;
+  --neon-blue: #0ff;
+  --neon-purple: #b026ff;
+  --neon-green: #0f9;
+  --dark-bg: #0a0a0f;
+  --grid-color: rgba(33, 255, 255, 0.1);
 }
 
-body {
+body.cyberpunk-theme {
+  background: var(--dark-bg);
+  background-image: 
+    linear-gradient(var(--grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+  background-size: 30px 30px;
+  font-family: 'Orbitron', sans-serif;
+  color: #fff;
+  min-height: 100vh;
   margin: 0;
   padding: 20px;
-  background-color: var(--dark-bg);
-  color: var(--neon-blue);
-  font-family: 'Orbitron', sans-serif;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-image: linear-gradient(rgba(0, 255, 242, 0.1) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(0, 255, 242, 0.1) 1px, transparent 1px);
-  background-size: 20px 20px;
+  position: relative;
+  overflow-x: hidden;
 }
 
-.game-container {
-  background-color: rgba(10, 10, 10, 0.9);
-  padding: 30px;
-  border-radius: 10px;
-  border: 2px solid var(--neon-blue);
-  box-shadow: 0 0 20px var(--neon-blue);
-  text-align: center;
-}
-
-h1 {
-  color: var(--neon-blue);
-  text-shadow: 0 0 10px var(--neon-blue);
-  margin-bottom: 30px;
-}
-
-.difficulty-buttons {
-  margin-bottom: 30px;
-}
-
-.difficulty-buttons button {
-  background: transparent;
-  color: var(--neon-pink);
-  border: 2px solid var(--neon-pink);
-  padding: 10px 20px;
-  margin: 0 10px;
-  cursor: pointer;
-  font-family: 'Orbitron', sans-serif;
-  transition: all 0.3s ease;
-}
-
-.difficulty-buttons button:hover {
-  background: var(--neon-pink);
-  color: var(--dark-bg);
-  box-shadow: 0 0 20px var(--neon-pink);
-}
-
-#hangmanCanvas {
-  border: 2px solid var(--neon-purple);
-  border-radius: 5px;
-  margin: 20px 0;
-  box-shadow: 0 0 15px var(--neon-purple);
-}
-
-#wordDisplay {
-  font-size: 2em;
-  margin: 20px 0;
-  color: var(--neon-blue);
-  text-shadow: 0 0 10px var(--neon-blue);
-  letter-spacing: 5px;
-}
-
-.game-info {
-  color: var(--neon-purple);
-  margin: 20px 0;
-}
-
-.game-controls {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.hint-btn, .add-btn {
-  width: 60px;
-  height: 60px;
-  font-size: 36px;
-  border-radius: 5px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-}
-
-.hint-btn {
-  background: transparent;
-  color: var(--neon-blue);
-  border: 3px solid var(--neon-blue);
-}
-
-.add-btn {
-  background: transparent;
-  color: var(--neon-pink);
-  border: 3px solid var(--neon-pink);
-}
-
-.hint-btn:hover {
-  background: var(--neon-blue);
-  color: var(--dark-bg);
-  box-shadow: 0 0 20px var(--neon-blue);
-}
-
-.add-btn:hover {
-  background: var(--neon-pink);
-  color: var(--dark-bg);
-  box-shadow: 0 0 20px var(--neon-pink);
-}
-
-/* Modal styles */
-.modal {
-  display: none;
+/* Effet de scan sur le body */
+body.cyberpunk-theme::after {
+  content: '';
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
+  height: 4px;
+  background: var(--neon-blue);
+  opacity: 0.2;
+  box-shadow: 0 0 20px var(--neon-blue);
+  animation: scan 8s linear infinite;
+}
+
+@keyframes scan {
+  0% { transform: translateY(-100vh); }
+  100% { transform: translateY(100vh); }
+}
+
+.game-container {
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid var(--neon-blue);
+  box-shadow: 0 0 20px var(--neon-blue),
+              inset 0 0 50px rgba(0, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 30px;
+  max-width: 800px;
+  width: 90%;
+  margin: 20px auto;
+  position: relative;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+}
+
+/* Coins cyberpunk sur le container */
+.game-container::before,
+.game-container::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--neon-pink);
+}
+
+.game-container::before {
+  top: -2px;
+  left: -2px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.game-container::after {
+  bottom: -2px;
+  right: -2px;
+  border-left: none;
+  border-top: none;
+}
+
+h1 {
+  color: var(--neon-blue);
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2.5em;
+  text-shadow: 0 0 10px var(--neon-blue),
+               0 0 20px var(--neon-blue),
+               0 0 30px var(--neon-blue);
+  animation: textFlicker 3s infinite alternate;
+}
+
+@keyframes textFlicker {
+  0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
+    opacity: 1;
+    text-shadow: 0 0 10px var(--neon-blue),
+                 0 0 20px var(--neon-blue),
+                 0 0 30px var(--neon-blue);
+  }
+  20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
+    opacity: 0.4;
+    text-shadow: none;
+  }
+}
+
+.difficulty-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.difficulty-btn {
+  background: transparent;
+  border: 2px solid var(--neon-pink);
+  color: var(--neon-pink);
+  padding: 10px 20px;
+  border-radius: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+}
+
+.difficulty-btn:hover,
+.difficulty-btn.selected {
+  background: var(--neon-pink);
+  color: var(--dark-bg);
+  box-shadow: 0 0 15px var(--neon-pink);
+  transform: translateY(-2px);
+}
+
+canvas {
+  border: 2px solid var(--neon-purple);
+  border-radius: 0;
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 20px var(--neon-purple);
+  margin: 20px auto;
+  display: block;
+}
+
+#wordDisplay {
+  font-size: 2.5em;
+  letter-spacing: 8px;
+  text-align: center;
+  margin: 20px 0;
+  color: var(--neon-blue);
+  font-family: 'Orbitron', monospace;
+  text-shadow: 0 0 10px var(--neon-blue);
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 5px var(--neon-blue),
+                 0 0 10px var(--neon-blue);
+  }
+  to {
+    text-shadow: 0 0 10px var(--neon-blue),
+                 0 0 20px var(--neon-blue),
+                 0 0 30px var(--neon-blue);
+  }
+}
+
+.key {
+  background: transparent;
+  border: 1px solid var(--neon-green);
+  color: var(--neon-green);
+  width: 40px;
+  height: 40px;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Orbitron', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.key::before {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
-  z-index: 1000;
+  background: var(--neon-green);
+  opacity: 0.2;
+  transition: all 0.3s ease;
+}
+
+.key:hover::before {
+  top: 0;
+}
+
+.key:hover {
+  background: var(--neon-green);
+  color: var(--dark-bg);
+  box-shadow: 0 0 10px var(--neon-green);
+  transform: translateY(-2px);
+}
+
+.key.used {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.game-info {
+  color: var(--neon-purple);
+  text-shadow: 0 0 5px var(--neon-purple);
+}
+
+#hintButton {
+  background: transparent;
+  border: 2px solid var(--neon-blue);
+  color: var(--neon-blue);
+}
+
+#hintButton:hover:not(:disabled) {
+  background: var(--neon-blue);
+  color: var(--dark-bg);
+  box-shadow: 0 0 15px var(--neon-blue);
+}
+
+#hintText {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--neon-purple);
+  box-shadow: 0 0 10px var(--neon-purple);
+  color: #fff;
 }
 
 .modal-content {
   background: var(--dark-bg);
-  border: 2px solid var(--neon-pink);
-  box-shadow: 0 0 30px var(--neon-pink);
-  margin: 15% auto;
-  padding: 20px;
-  width: 80%;
-  max-width: 500px;
-  position: relative;
-  border-radius: 10px;
+  border: 2px solid var(--neon-blue);
+  box-shadow: 0 0 20px var(--neon-blue);
+  color: #fff;
 }
 
-.close {
+.form-group label {
+  color: var(--neon-blue);
+  text-shadow: 0 0 5px var(--neon-blue);
+}
+
+.form-group input, 
+.form-group select {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--neon-purple);
+  color: #fff;
+  padding: 8px;
+  border-radius: 5px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  box-shadow: 0 0 10px var(--neon-purple);
+  outline: none;
+}
+
+#addWordButton {
+  background: transparent;
+  border: 2px solid var(--neon-pink);
   color: var(--neon-pink);
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
+}
+
+#addWordButton:hover {
+  background: var(--neon-pink);
+  color: var(--dark-bg);
+  box-shadow: 0 0 15px var(--neon-pink);
+}
+
+@keyframes neonPulse {
+  0% { opacity: 0.8; }
+  50% { opacity: 1; }
+  100% { opacity: 0.8; }
+}
+
+.neon-element {
+  animation: neonPulse 2s infinite;
+}
+
+@media (max-width: 600px) {
+    .game-container {
+        padding: 15px;
+    }
+
+    .key {
+        width: 30px;
+        height: 30px;
+        font-size: 1em;
+    }
+
+    #wordDisplay {
+        font-size: 1.5em;
+    }
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    position: relative;
+    background: var(--dark-bg);
+    border: 2px solid var(--neon-pink);
+    box-shadow: 0 0 30px var(--neon-pink);
+    margin: 15% auto;
+    padding: 30px;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 10px;
 }
 
 .modal h2 {
-  color: var(--neon-pink);
-  text-align: center;
-  margin-bottom: 20px;
+    color: var(--neon-pink);
+    text-align: center;
+    margin-bottom: 30px;
+    font-family: 'Orbitron', sans-serif;
+    text-shadow: 0 0 10px var(--neon-pink);
 }
 
 .modal input, .modal select {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  background: transparent;
-  border: 2px solid var(--neon-blue);
-  color: white;
-  font-family: 'Orbitron', sans-serif;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 12px;
+    background: transparent;
+    border: 2px solid var(--neon-blue);
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    border-radius: 5px;
+}
+
+.modal input:focus, .modal select:focus {
+    outline: none;
+    box-shadow: 0 0 15px var(--neon-blue);
 }
 
 .modal button {
-  width: 100%;
-  padding: 10px;
-  background: transparent;
-  border: 2px solid var(--neon-pink);
-  color: var(--neon-pink);
-  font-family: 'Orbitron', sans-serif;
-  cursor: pointer;
-  transition: all 0.3s ease;
+    width: 100%;
+    padding: 15px;
+    background: transparent;
+    border: 2px solid var(--neon-pink);
+    color: var(--neon-pink);
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 5px;
 }
 
 .modal button:hover {
-  background: var(--neon-pink);
-  color: var(--dark-bg);
+    background: var(--neon-pink);
+    color: var(--dark-bg);
+    box-shadow: 0 0 20px var(--neon-pink);
+}
+
+.close {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    color: var(--neon-pink);
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.close:hover {
+    text-shadow: 0 0 10px var(--neon-pink);
+}
+
+/* Style pour le formulaire dans le modal */
+#addWordForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+#addWordForm input,
+#addWordForm select {
+    padding: 10px;
+    background: transparent;
+    border: 1px solid var(--neon-blue);
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+}
+
+#addWordForm button {
+    padding: 10px 20px;
+    background: transparent;
+    border: 2px solid var(--neon-pink);
+    color: var(--neon-pink);
+    font-family: 'Orbitron', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#addWordForm button:hover {
+    background: var(--neon-pink);
+    color: var(--dark-bg);
+    box-shadow: 0 0 15px var(--neon-pink);
+}
+
+.keyboard-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+    margin: 5px 0;
+}
+
+#usedLetters {
+    font-family: 'Orbitron', monospace;
+    color: var(--neon-purple);
+    margin: 10px 0;
+    text-shadow: 0 0 5px var(--neon-purple);
+}
+
+form button[type="submit"] {
+    background: transparent;
+    border: 2px solid var(--neon-blue);
+    color: var(--neon-blue);
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+form button[type="submit"]:hover {
+    background: var(--neon-blue);
+    color: var(--dark-bg);
+    box-shadow: 0 0 15px var(--neon-blue);
+}
+
+/* Style pour le bouton "Obtenir un indice" */
+.hint-btn {
+    background: transparent;
+    color: var(--neon-blue);
+    border: 2px solid var(--neon-blue);
+    padding: 10px 20px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px var(--neon-blue);
+}
+
+.hint-btn:hover {
+    background: var(--neon-blue);
+    color: var(--dark-bg);
+    box-shadow: 0 0 20px var(--neon-blue);
+}
+
+.hint-btn:active {
+    transform: scale(0.95);
+}
+
+/* Style pour le bouton "Ajouter" */
+.add-btn {
+    width: 60px;
+    height: 60px;
+    background: transparent;
+    color: var(--neon-pink);
+    border: 3px solid var(--neon-pink);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 72px;
+    font-weight: 900;
+    line-height: 0.8;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px var(--neon-pink);
+    padding: 0;
+}
+
+.add-btn:hover {
+    text-shadow: 0 0 15px var(--neon-pink);
+    box-shadow: 0 0 30px var(--neon-pink);
+}
+
+.add-btn:active {
+    transform: scale(0.95);
+}
+
+/* Animation de scintillement pour les deux boutons */
+@keyframes glitch {
+    0% { transform: translate(0) }
+    20% { transform: translate(-2px, 2px) }
+    40% { transform: translate(-2px, -2px) }
+    60% { transform: translate(2px, 2px) }
+    80% { transform: translate(2px, -2px) }
+    100% { transform: translate(0) }
+}
+
+.hint-btn:hover::before,
+.add-btn:hover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    animation: shine 1s linear infinite;
+}
+
+@keyframes shine {
+    to {
+        left: 100%;
+    }
+}
+
+.hint-btn, .add-btn {
+    width: 60px;  /* Largeur augmentée */
+    height: 60px; /* Hauteur augmentée pour faire un carré */
+    padding: 0;   /* Supprime le padding pour un meilleur contrôle */
+    font-size: 28px; /* Taille de police augmentée */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-width: 3px; /* Bordure plus épaisse */
+}
+
+/* Style spécifique pour le symbole + */
+.add-btn::after {
+    font-size: 36px; /* Taille plus grande pour le + */
+}
+
+/* Style spécifique pour le symbole ? */
+.hint-btn::after {
+    content: '?';
+    font-size: 36px;
+    font-weight: bold;
+}
+
+/* Cache le texte original des boutons */
+.hint-btn span, .add-btn span {
+    display: none;
+}
+
+/* Augmente la taille de l'effet de glow */
+.hint-btn:hover, .add-btn:hover {
+    box-shadow: 0 0 30px var(--neon-blue);
+}
+
+.add-btn:hover {
+    box-shadow: 0 0 30px var(--neon-pink);
+}
+
+.modal select {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 12px;
+    background: var(--dark-bg);
+    border: 2px solid var(--neon-blue);
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Style pour les options du select */
+.modal select option {
+    background: var(--dark-bg);
+    color: var(--neon-blue);
+    padding: 12px;
+    font-family: 'Orbitron', sans-serif;
+}
+
+/* Style pour l'option sélectionnée */
+.modal select option:checked {
+    background: var(--neon-blue);
+    color: var(--dark-bg);
+}
+
+/* Style pour le hover sur les options */
+.modal select option:hover {
+    background: rgba(0, 255, 255, 0.2);
+}
+
+/* Style pour le focus du select */
+.modal select:focus {
+    outline: none;
+    box-shadow: 0 0 15px var(--neon-blue);
 }

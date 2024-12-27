@@ -1,0 +1,4 @@
+git status
+git add .
+git commit -m "Fix: Restauration complète du jeu avec système de mots JSON"
+git push origin main

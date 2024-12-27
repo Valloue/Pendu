@@ -1,3 +1,43 @@
+function initializeWords() {
+    if (!localStorage.getItem('customWords')) {
+        localStorage.setItem('customWords', JSON.stringify([]));
+    }
+}
+
+function ajouterMot(mot, indice, difficulte) {
+    try {
+        // Récupérer les mots existants
+        let customWords = JSON.parse(localStorage.getItem('customWords') || '[]');
+        
+        // Créer le nouveau mot
+        const nouveauMot = {
+            mot: mot,
+            indice: indice,
+            difficulte: difficulte
+        };
+        
+        // Ajouter le nouveau mot
+        customWords.push(nouveauMot);
+        
+        // Sauvegarder dans localStorage
+        localStorage.setItem('customWords', JSON.stringify(customWords));
+        
+        return true;
+    } catch (error) {
+        console.error("Erreur lors de l'ajout du mot:", error);
+        return false;
+    }
+}
+
+function chargerMots() {
+    // Initialiser si nécessaire
+    initializeWords();
+    
+    // Combiner les mots par défaut avec les mots personnalisés
+    const customWords = JSON.parse(localStorage.getItem('customWords') || '[]');
+    return [...motsParDefaut, ...customWords];
+}
+
 class HangmanGame {
     constructor() {
         this.difficulties = {

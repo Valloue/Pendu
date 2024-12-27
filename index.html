@@ -37,7 +37,7 @@
             <div class="modal-content">
                 <span class="close" onclick="closeModal()">&times;</span>
                 <h2>Ajouter un nouveau mot</h2>
-                <form id="addWordForm">
+                <form id="formAjoutMot" onsubmit="event.preventDefault(); ajouterNouveauMot();">
                     <input type="text" id="newWord" placeholder="Nouveau mot" required>
                     <input type="text" id="hint1" placeholder="Premier exemple" required>
                     <input type="text" id="hint2" placeholder="Deuxième exemple" required>
@@ -58,5 +58,19 @@
     </div>
 
     <script src="js/game.js"></script>
+    <script>
+    function ajouterNouveauMot() {
+        const mot = document.getElementById('newWord').value;
+        const indice = document.getElementById('hint1').value;
+        const difficulte = document.getElementById('difficulty').value;
+        
+        if (ajouterMot(mot, indice, difficulte)) {
+            alert('Mot ajouté avec succès !');
+            document.getElementById('formAjoutMot').reset();
+        } else {
+            alert('Erreur lors de l\'ajout du mot');
+        }
+    }
+    </script>
 </body>
 </html> 

@@ -1,3 +1,14 @@
+const defaultWords = [
+    {
+        word: "javascript",
+        hint1: "Langage de programmation",
+        hint2: "Utilisé pour le web",
+        hint3: "Fonctionne dans le navigateur",
+        difficulty: "facile"
+    },
+    // Ajoutez d'autres mots par défaut...
+];
+
 class HangmanGame {
     constructor() {
         this.difficulties = {
@@ -1045,7 +1056,7 @@ class HangmanGame {
                     'Le joueur est forcé de détériorer sa position'
                 ],
                 'ZYKLON': [
-                    'Pesticide tristement célèbre',
+                    'Pesticide tristement c��lèbre',
                     'Composé chimique hautement toxique',
                     'Utilisé de manière tragique pendant la Seconde Guerre mondiale'
                 ]
@@ -1056,6 +1067,11 @@ class HangmanGame {
         this.initHintButton();
         this.isModalOpen = false;
         this.initModal();
+
+        // Initialiser le localStorage si vide
+        if (!localStorage.getItem('hangmanWords')) {
+            localStorage.setItem('hangmanWords', JSON.stringify(defaultWords));
+        }
     }
 
     initDifficultyButtons() {
@@ -1365,7 +1381,7 @@ class HangmanGame {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = {
-                word: document.getElementById('newWord').value,
+                word: document.getElementById('newWord').value.toLowerCase(),
                 hint1: document.getElementById('hint1').value,
                 hint2: document.getElementById('hint2').value,
                 hint3: document.getElementById('hint3').value,
@@ -1373,21 +1389,18 @@ class HangmanGame {
             };
 
             try {
-                const response = await fetch('/api/words', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
-
-                if (response.ok) {
-                    alert('Mot ajouté avec succès !');
-                    form.reset();
-                    closeModal();
-                } else {
-                    alert('Erreur lors de l\'ajout du mot');
-                }
+                // Récupérer les mots existants
+                let words = JSON.parse(localStorage.getItem('hangmanWords')) || [];
+                
+                // Ajouter le nouveau mot
+                words.push(formData);
+                
+                // Sauvegarder dans localStorage
+                localStorage.setItem('hangmanWords', JSON.stringify(words));
+                
+                alert('Mot ajouté avec succès !');
+                form.reset();
+                modal.style.display = 'none';
             } catch (error) {
                 console.error('Erreur:', error);
                 alert('Erreur lors de l\'ajout du mot');
@@ -1403,6 +1416,29 @@ class HangmanGame {
         // Vérifie si c'est une lettre de A à Z
         if (/^[A-Z]$/.test(letter)) {
             this.handleGuess(letter);
+        }
+    }
+
+    async getRandomWord() {
+        try {
+            // Récupérer les mots du localStorage
+            const words = JSON.parse(localStorage.getItem('hangmanWords')) || [];
+            
+            // Filtrer par difficulté si nécessaire
+            const filteredWords = words.filter(word => 
+                word.difficulty === this.currentDifficulty
+            );
+
+            if (filteredWords.length === 0) {
+                throw new Error('Aucun mot disponible pour cette difficulté');
+            }
+
+            // Sélectionner un mot au hasard
+            const randomIndex = Math.floor(Math.random() * filteredWords.length);
+            return filteredWords[randomIndex];
+        } catch (error) {
+            console.error('Erreur:', error);
+            return null;
         }
     }
 }

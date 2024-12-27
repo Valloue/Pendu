@@ -1411,3 +1411,29 @@ class HangmanGame {
 document.addEventListener('DOMContentLoaded', () => {
     new HangmanGame();
 });
+
+async function addNewWord(word, hints, difficulty) {
+    try {
+        await addDoc(collection(db, "mots"), {
+            mot: word,
+            indices: hints,
+            difficulte: difficulty,
+            dateAjout: serverTimestamp()
+        });
+        alert("Mot ajouté avec succès !");
+    } catch (error) {
+        console.error("Erreur lors de l'ajout du mot :", error);
+        alert("Erreur lors de l'ajout du mot");
+    }
+}
+
+async function getWords(difficulty) {
+    const motsRef = collection(db, "mots");
+    const q = query(motsRef, where("difficulte", "==", difficulty));
+    const querySnapshot = await getDocs(q);
+    const words = [];
+    querySnapshot.forEach((doc) => {
+        words.push(doc.data());
+    });
+    return words;
+}

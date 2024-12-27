@@ -1371,16 +1371,12 @@ class HangmanGame {
 
         closeBtn.addEventListener('click', closeModal);
 
-        window.addEventListener('click', (event) => {
-            if (event.target === modal) {
-                closeModal();
-            }
-        });
-
         // Gestion du formulaire
-        form.addEventListener('submit', async (e) => {
+        form.addEventListener('submit', (e) => {
             e.preventDefault();
-            const formData = {
+            
+            // Récupération des valeurs du formulaire
+            const newWord = {
                 word: document.getElementById('newWord').value.toLowerCase(),
                 hint1: document.getElementById('hint1').value,
                 hint2: document.getElementById('hint2').value,
@@ -1389,21 +1385,39 @@ class HangmanGame {
             };
 
             try {
-                // Récupérer les mots existants
-                let words = JSON.parse(localStorage.getItem('hangmanWords')) || [];
+                // Récupérer la liste existante ou créer un nouveau tableau
+                let wordsList = [];
+                const existingWords = localStorage.getItem('hangmanWords');
                 
+                if (existingWords) {
+                    wordsList = JSON.parse(existingWords);
+                }
+
                 // Ajouter le nouveau mot
-                words.push(formData);
-                
+                wordsList.push(newWord);
+
                 // Sauvegarder dans localStorage
-                localStorage.setItem('hangmanWords', JSON.stringify(words));
-                
-                alert('Mot ajouté avec succès !');
+                localStorage.setItem('hangmanWords', JSON.stringify(wordsList));
+
+                // Réinitialiser le formulaire et fermer la modal
                 form.reset();
-                modal.style.display = 'none';
+                closeModal();
+
+                // Message de confirmation
+                alert('Mot ajouté avec succès !');
+                
+                console.log('Mots sauvegardés:', wordsList); // Pour débugger
+                
             } catch (error) {
-                console.error('Erreur:', error);
+                console.error('Erreur lors de la sauvegarde:', error);
                 alert('Erreur lors de l\'ajout du mot');
+            }
+        });
+
+        // Fermeture en cliquant en dehors
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeModal();
             }
         });
     }
@@ -1422,22 +1436,30 @@ class HangmanGame {
     async getRandomWord() {
         try {
             // Récupérer les mots du localStorage
-            const words = JSON.parse(localStorage.getItem('hangmanWords')) || [];
-            
-            // Filtrer par difficulté si nécessaire
+            const wordsString = localStorage.getItem('hangmanWords');
+            if (!wordsString) {
+                console.log('Aucun mot trouvé dans le localStorage');
+                return null;
+            }
+
+            const words = JSON.parse(wordsString);
+            console.log('Mots disponibles:', words); // Pour débugger
+
+            // Filtrer par difficulté
             const filteredWords = words.filter(word => 
-                word.difficulty === this.currentDifficulty
+                word.difficulty.toLowerCase() === this.currentDifficulty.toLowerCase()
             );
 
             if (filteredWords.length === 0) {
-                throw new Error('Aucun mot disponible pour cette difficulté');
+                console.log('Aucun mot pour cette difficulté:', this.currentDifficulty);
+                return null;
             }
 
             // Sélectionner un mot au hasard
             const randomIndex = Math.floor(Math.random() * filteredWords.length);
             return filteredWords[randomIndex];
         } catch (error) {
-            console.error('Erreur:', error);
+            console.error('Erreur lors de la récupération du mot:', error);
             return null;
         }
     }

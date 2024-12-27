@@ -1,27 +1,20 @@
-function initializeWords() {
-    if (!localStorage.getItem('customWords')) {
-        localStorage.setItem('customWords', JSON.stringify([]));
-    }
-}
+// Initialisation de Firebase (à ajouter dans le head de votre HTML)
+const firebaseConfig = {
+    // Votre configuration Firebase
+};
 
-function ajouterMot(mot, indice, difficulte) {
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+async function ajouterMot(mot, indice, difficulte) {
     try {
-        // Récupérer les mots existants
-        let customWords = JSON.parse(localStorage.getItem('customWords') || '[]');
-        
-        // Créer le nouveau mot
-        const nouveauMot = {
+        await db.collection('mots').add({
             mot: mot,
             indice: indice,
-            difficulte: difficulte
-        };
-        
-        // Ajouter le nouveau mot
-        customWords.push(nouveauMot);
-        
-        // Sauvegarder dans localStorage
-        localStorage.setItem('customWords', JSON.stringify(customWords));
-        
+            difficulte: difficulte,
+            dateAjout: firebase.firestore.FieldValue.serverTimestamp()
+        });
         return true;
     } catch (error) {
         console.error("Erreur lors de l'ajout du mot:", error);
@@ -29,13 +22,14 @@ function ajouterMot(mot, indice, difficulte) {
     }
 }
 
-function chargerMots() {
-    // Initialiser si nécessaire
-    initializeWords();
-    
-    // Combiner les mots par défaut avec les mots personnalisés
-    const customWords = JSON.parse(localStorage.getItem('customWords') || '[]');
-    return [...motsParDefaut, ...customWords];
+async function chargerMots() {
+    try {
+        const snapshot = await db.collection('mots').get();
+        return snapshot.docs.map(doc => doc.data());
+    } catch (error) {
+        console.error("Erreur lors du chargement des mots:", error);
+        return [];
+    }
 }
 
 class HangmanGame {
@@ -453,7 +447,7 @@ class HangmanGame {
                 'PECHE': [
                     'Fruit doux et juteux',
                     'Peau duveteuse',
-                    'Fruit d\'été'
+                    'Fruit d\'ét��'
                 ],
                 'PERE': [
                     'Parent masculin',

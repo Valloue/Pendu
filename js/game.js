@@ -1357,31 +1357,36 @@ class HangmanGame {
     }
 
     getHint() {
+        console.log('Début getHint');
+        console.log('Difficulté:', this.difficulty);
+        console.log('Indices restants:', this.hintsRemaining);
         console.log('Mot actuel:', this.word);
-        console.log('Difficulté actuelle:', this.currentDifficulty);
-        console.log('Indices disponibles:', this.hints[this.currentDifficulty][this.word]);
-        
+        console.log('Indices disponibles:', this.hints?.[this.difficulty]?.[this.word]);
+
         if (this.hintsRemaining <= 0) {
+            console.log('Pas d\'indices restants');
             alert('Vous n\'avez plus d\'indices disponibles !');
             return;
         }
 
-        const hints = this.hints[this.currentDifficulty];
-        const wordHints = hints[this.word];
-        
-        if (!wordHints) {
-            console.log('Mot actuel:', this.word);
-            console.log('Difficulté actuelle:', this.currentDifficulty);
-            console.log('Indices disponibles:', Object.keys(hints));
-            return `Indice ${3 - this.hintsRemaining}/3 : Désolé, pas d'indice disponible pour ce mot`;
+        const availableHints = this.hints[this.difficulty][this.word];
+        console.log('Hints trouvés:', availableHints);
+
+        if (!availableHints || availableHints.length === 0) {
+            console.log('Aucun indice trouvé pour ce mot');
+            return;
         }
+
+        const usedHints = new Set(this.usedHints);
+        const unusedHints = availableHints.filter(hint => !usedHints.has(hint));
         
-        // Utilise l'indice correspondant au nombre d'indices restants
-        const hintIndex = 2 - this.hintsRemaining; // 2,1,0 pour les trois indices
-        const hint = `Indice ${3 - this.hintsRemaining}/3 : ${wordHints[hintIndex]}`;
-        this.hintsRemaining--;
-        this.updateHintDisplay();
-        return hint;
+        if (unusedHints.length > 0) {
+            const hint = unusedHints[Math.floor(Math.random() * unusedHints.length)];
+            this.usedHints.push(hint);
+            this.hintsRemaining--;
+            this.updateHintDisplay();
+            alert(hint);
+        }
     }
 
     drawHangman() {

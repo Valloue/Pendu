@@ -1301,18 +1301,23 @@ class HangmanGame {
             ctx.moveTo(startX + 100, 90);
             ctx.lineTo(startX + 100, 140);
         }
-        // Bras gauche et droit + jambes
+        // Bras gauche
         if (this.errors >= 10) {
-            // Bras gauche
             ctx.moveTo(startX + 100, 105);
             ctx.lineTo(startX + 70, 120);
-            // Bras droit
+        }
+        // Bras droit
+        if (this.errors >= 11) {
             ctx.moveTo(startX + 100, 105);
             ctx.lineTo(startX + 130, 120);
-            // Jambe gauche
+        }
+        // Jambe gauche
+        if (this.errors >= 12) {
             ctx.moveTo(startX + 100, 140);
             ctx.lineTo(startX + 70, 170);
-            // Jambe droite
+        }
+        // Jambe droite
+        if (this.errors >= 13) {
             ctx.moveTo(startX + 100, 140);
             ctx.lineTo(startX + 130, 170);
         }

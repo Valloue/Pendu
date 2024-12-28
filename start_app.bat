@@ -1,7 +1,7 @@
 @echo off
 chcp 65001 > nul
 echo ====================================
-echo    Démarrage de l'application AppManu
+echo    Démarrage de l'application 
 echo ====================================
 echo.
 

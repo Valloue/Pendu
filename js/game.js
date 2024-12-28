@@ -985,137 +985,142 @@ class HangmanGame {
                 ]
             },
             difficile: {
-                ABNEGATION:  [
-                    'Déclaration de renonciation',
-                    'Refus d\'une offre',
-                    'Annulation d\'un contrat'
+                'ABNEGATION': [
+                    'Renoncement volontaire',
+                    'Sacrifice de soi-même',
+                    'Abandon de ses intérêts personnels'
                 ],
-                ABRICOTIER: [
+                'ABRICOTIER': [
                     'Arbre fruitier',
-                    'Produit du fruit',
-                    'Fruit à pulpe'
+                    'Produit des fruits orange',
+                    'Famille des Rosacées'
                 ],
-                ABYSSE: [
-                    'Grande profondeur',
-                    'Mer sans fond',
-                    'Océan sans rivage'
+                'ABYSSE': [
+                    'Profondeur océanique',
+                    'Gouffre sans fond',
+                    'Zone la plus profonde des océans'
                 ],
-                ACROSTICHE: [
-                    'Mot en forme de croix',
-                    'Mot avec des lettres en diagonale',
-                    'Mot qui se lit de gauche à droite et de droite à gauche'
+                'ACROSTICHE': [
+                    'Type de poème',
+                    'Les premières lettres forment un mot',
+                    'Composition poétique particulière'
                 ],
-                AGNOSTICISME: [
-                    'Abandon de la religion',
-                    'Indépendance de la foi',
-                    'Défiance envers les dogmes'
+                'AGNOSTICISME': [
+                    'Position philosophique',
+                    'Ni croyant ni athée',
+                    'Doute sur l\'existence divine'
                 ],
-                ASTERISQUE: [
-                    'Symbole de multiplication',
-                    'Point de suspension',
-                    'Signe de multiplication'
+                'ASTERISQUE': [
+                    'Signe typographique',
+                    'Petite étoile',
+                    'Marque une note ou une référence'
                 ],
-                BABILLARD: [
+                'BABILLARD': [
                     'Personne qui parle beaucoup',
-                    'Membre de la bourgeoisie',
-                    'Habitant de la campagne'
-                ], 
-                BALUSTRE: [
-                    'Support vertical',
-                    'Barrière en bois',
-                    'Élément de décoration'
-                ], 
-                BASKETBALL: [
+                    'Bavard incessant',
+                    'Qui aime raconter des histoires'
+                ],
+                'BALSAMIQUE': [
+                    'Type de vinaigre',
+                    'Originaire de Modène',
+                    'Condiment italien précieux'
+                ],
+                'BALUSTRE': [
+                    'Élément architectural',
+                    'Petit pilier de rampe',
+                    'Support vertical décoratif'
+                ],
+                'BASKETBALL': [
                     'Sport collectif',
                     'Jeu avec un ballon',
                     'Équipe de 5 joueurs'
-                ], 
-                BENEFIQUE: [
+                ],
+                'BENEFIQUE': [
                     'Personne qui bénéficie',
                     'Qui reçoit un don',
                     'Qui est dans l\'intérêt'
                 ],
-                BROCANTEUR: [
+                'BROCANTEUR': [
                     'Personne qui vend des objets',
                     'Vend des choses usagées',
                     'A un stand de marché'
                 ],
-                CAMBRIOLEUSE: [
+                'CAMBRIOLEUSE': [
                     'Personne qui change de voiture',
                     'Vend des voitures d\'occasion',
                     'A un stand de voitures'
                 ],
-                CARACOLER: [
+                'CARACOLER': [
                     'Personne qui se déplace lentement',
                     'Marche comme une carapace',
                     'A une carapace comme protection'
                 ],
-                CHAMPAGNE: [
+                'CHAMPAGNE': [
                     'Boisson alcoolisée',
                     'Produit de la région de Champagne',
                     'Fête avec du champagne'
-                ], 
-                CHIMERE: [
+                ],
+                'CHIMERE': [
                     'Créature mythologique',
                     'Combattant des dieux',
                     'Féroce et redoutable'
                 ],
-                CLANDESTIN: [
+                'CLANDESTIN': [
                     'Secret et désordonné',
                     'Sans loi',
                     'Sans ordre'
                 ],
-                CLOCHE: [
+                'CLOCHE': [
                     'Instrument de signalisation',
                     'Sonne à l\'heure',
                     'A un clocheton'
                 ],
-                COEXISTER: [
+                'COEXISTER': [
                     'Vivre ensemble',
                     'Coexistance',
                     'Coopération'
                 ],
-                CONTRAVENTION: [
+                'CONTRAVENTION': [
                     'Action en violation',
                     'Contre la loi',
                     'Défaut de respect'
                 ],
-                CYBERSPACE: [
+                'CYBERSPACE': [
                     'Monde virtuel',
                     'Réseau informatique',
                     'Espace de communication'
                 ],
-                DEBACLE: [
+                'DEBACLE': [
                     'Faillite',
                     'Défaite totale',
                     'Échec complet'
                 ],
-                DESENCHANTEMENT: [
+                'DESENCHANTEMENT': [
                     'Perte de l\'enchantement',
                     'Défaite de l\'illusion',
                     'Échec de la magie'
                 ],
-                DISSONANCE: [
+                'DISSONANCE': [
                     'Incohérence',
                     'Contradiction',
                     'Désaccord'
                 ],
-                EBULLITION: [
+                'EBULLITION': [
                     'Ébullition de l\'eau',
                     'Boisson chaude',
                     'Réaction chimique'
                 ],
-                ELEPHANTIASIS: [
+                'ELEPHANTIASIS': [
                     'Maladie des éléphants',
                     'Infection des éléphants',
                     'Affection des éléphants'
                 ],
-                DIPHTONGUE: [
+                'DIPHTONGUE': [
                     'Langue qui a deux sons',
                     'Mots avec deux syllabes',
                     'Expression qui utilise deux sons distincts'
                 ],
-                DISSONANCE: [
+                'DISSONANCE': [
                     'Incohérence',
                     'Contradiction',
                     'Désaccord'
@@ -1352,6 +1357,10 @@ class HangmanGame {
     }
 
     getHint() {
+        console.log('Mot actuel:', this.word);
+        console.log('Difficulté actuelle:', this.currentDifficulty);
+        console.log('Indices disponibles:', this.hints[this.currentDifficulty][this.word]);
+        
         if (this.hintsRemaining <= 0) {
             alert('Vous n\'avez plus d\'indices disponibles !');
             return;

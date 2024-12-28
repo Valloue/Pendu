@@ -1371,7 +1371,7 @@ class HangmanGame {
     }
 
     getHint() {
-        console.log('Demande d\'indice');
+        console.log('Début getHint');
         console.log('Indices restants:', this.hintsRemaining);
         console.log('Mot actuel:', this.word);
 
@@ -1380,22 +1380,46 @@ class HangmanGame {
             return;
         }
 
-        const availableHints = this.hints[this.currentDifficulty][this.word];
-        
-        if (!availableHints || availableHints.length === 0) {
-            console.log('Aucun indice trouvé pour ce mot');
+        // Vérification que this.hints et this.difficulty existent
+        if (!this.hints || !this.hints[this.currentDifficulty]) {
+            console.error('Erreur: hints ou difficulty non définis');
             return;
         }
 
-        const usedHints = new Set(this.usedHints);
+        const availableHints = this.hints[this.currentDifficulty][this.word];
+        console.log('Indices disponibles:', availableHints);
+
+        if (!availableHints || availableHints.length === 0) {
+            console.error('Aucun indice trouvé pour ce mot');
+            return;
+        }
+
+        // Filtrer les indices non utilisés
+        const usedHints = new Set(this.usedHints || []);
         const unusedHints = availableHints.filter(hint => !usedHints.has(hint));
         
         if (unusedHints.length > 0) {
             const hint = unusedHints[Math.floor(Math.random() * unusedHints.length)];
+            // Initialiser this.usedHints s'il n'existe pas
+            if (!this.usedHints) {
+                this.usedHints = [];
+            }
             this.usedHints.push(hint);
             this.hintsRemaining--;
             this.updateHintDisplay();
-            alert(hint);
+            
+            // Utiliser une div pour afficher l'indice au lieu d'une alerte
+            const hintDisplay = document.getElementById('hintDisplay') || document.createElement('div');
+            hintDisplay.id = 'hintDisplay';
+            hintDisplay.textContent = `Indice : ${hint}`;
+            hintDisplay.style.color = 'var(--neon-purple)';
+            hintDisplay.style.marginTop = '10px';
+            hintDisplay.style.textAlign = 'center';
+            
+            // Ajouter l'élément s'il n'existe pas déjà
+            if (!document.getElementById('hintDisplay')) {
+                document.querySelector('.game-container').appendChild(hintDisplay);
+            }
         } else {
             alert('Vous avez déjà utilisé tous les indices disponibles pour ce mot !');
         }

@@ -69,6 +69,7 @@ class HangmanGame {
         this.ctx = this.canvas.getContext('2d');
         
         this.errors = 0;
+        this.hintsRemaining = 0; // Ajouter cette ligne
         this.initDifficultyButtons();
         this.initKeyboardEvents();
         this.init();
@@ -982,6 +983,13 @@ class HangmanGame {
                     'Brise légère',
                     'Souffle agréable'
                 ]
+            },
+            difficile: {
+                ABNEGATION:  [
+                    'Déclaration de renonciation',
+                    'Refus d\'une offre',
+                    'Annulation d\'un contrat'
+                ],
             },
             impossible: {
                 'ANTICONSTITUTIONNELLEMENT': [

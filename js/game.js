@@ -1111,15 +1111,15 @@ class HangmanGame {
         const keyboard = document.querySelector('.keyboard-row');
         keyboard.innerHTML = '';
         
-        // Définition du layout AZERTY en 3 rangées
-        const azertyLayout = [
-            ['A', 'Z', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
-            ['Q', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M'],
-            ['W', 'X', 'C', 'V', 'B', 'N']
+        // Définition du layout ABCD en 3 rangées
+        const abcdLayout = [
+            ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
+            ['K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S'],
+            ['T', 'U', 'V', 'W', 'X', 'Y', 'Z']
         ];
 
         // Création des rangées
-        azertyLayout.forEach(row => {
+        abcdLayout.forEach(row => {
             const rowDiv = document.createElement('div');
             rowDiv.className = 'keyboard-row';
             

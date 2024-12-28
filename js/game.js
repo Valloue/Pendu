@@ -990,6 +990,136 @@ class HangmanGame {
                     'Refus d\'une offre',
                     'Annulation d\'un contrat'
                 ],
+                ABRICOTIER: [
+                    'Arbre fruitier',
+                    'Produit du fruit',
+                    'Fruit à pulpe'
+                ],
+                ABYSSE: [
+                    'Grande profondeur',
+                    'Mer sans fond',
+                    'Océan sans rivage'
+                ],
+                ACROSTICHE: [
+                    'Mot en forme de croix',
+                    'Mot avec des lettres en diagonale',
+                    'Mot qui se lit de gauche à droite et de droite à gauche'
+                ],
+                AGNOSTICISME: [
+                    'Abandon de la religion',
+                    'Indépendance de la foi',
+                    'Défiance envers les dogmes'
+                ],
+                ASTERISQUE: [
+                    'Symbole de multiplication',
+                    'Point de suspension',
+                    'Signe de multiplication'
+                ],
+                BABILLARD: [
+                    'Personne qui parle beaucoup',
+                    'Membre de la bourgeoisie',
+                    'Habitant de la campagne'
+                ], 
+                BALUSTRE: [
+                    'Support vertical',
+                    'Barrière en bois',
+                    'Élément de décoration'
+                ], 
+                BASKETBALL: [
+                    'Sport collectif',
+                    'Jeu avec un ballon',
+                    'Équipe de 5 joueurs'
+                ], 
+                BENEFIQUE: [
+                    'Personne qui bénéficie',
+                    'Qui reçoit un don',
+                    'Qui est dans l\'intérêt'
+                ],
+                BROCANTEUR: [
+                    'Personne qui vend des objets',
+                    'Vend des choses usagées',
+                    'A un stand de marché'
+                ],
+                CAMBRIOLEUSE: [
+                    'Personne qui change de voiture',
+                    'Vend des voitures d\'occasion',
+                    'A un stand de voitures'
+                ],
+                CARACOLER: [
+                    'Personne qui se déplace lentement',
+                    'Marche comme une carapace',
+                    'A une carapace comme protection'
+                ],
+                CHAMPAGNE: [
+                    'Boisson alcoolisée',
+                    'Produit de la région de Champagne',
+                    'Fête avec du champagne'
+                ], 
+                CHIMERE: [
+                    'Créature mythologique',
+                    'Combattant des dieux',
+                    'Féroce et redoutable'
+                ],
+                CLANDESTIN: [
+                    'Secret et désordonné',
+                    'Sans loi',
+                    'Sans ordre'
+                ],
+                CLOCHE: [
+                    'Instrument de signalisation',
+                    'Sonne à l\'heure',
+                    'A un clocheton'
+                ],
+                COEXISTER: [
+                    'Vivre ensemble',
+                    'Coexistance',
+                    'Coopération'
+                ],
+                CONTRAVENTION: [
+                    'Action en violation',
+                    'Contre la loi',
+                    'Défaut de respect'
+                ],
+                CYBERSPACE: [
+                    'Monde virtuel',
+                    'Réseau informatique',
+                    'Espace de communication'
+                ],
+                DEBACLE: [
+                    'Faillite',
+                    'Défaite totale',
+                    'Échec complet'
+                ],
+                DESENCHANTEMENT: [
+                    'Perte de l\'enchantement',
+                    'Défaite de l\'illusion',
+                    'Échec de la magie'
+                ],
+                DISSONANCE: [
+                    'Incohérence',
+                    'Contradiction',
+                    'Désaccord'
+                ],
+                EBULLITION: [
+                    'Ébullition de l\'eau',
+                    'Boisson chaude',
+                    'Réaction chimique'
+                ],
+                ELEPHANTIASIS: [
+                    'Maladie des éléphants',
+                    'Infection des éléphants',
+                    'Affection des éléphants'
+                ],
+                DIPHTONGUE: [
+                    'Langue qui a deux sons',
+                    'Mots avec deux syllabes',
+                    'Expression qui utilise deux sons distincts'
+                ],
+                DISSONANCE: [
+                    'Incohérence',
+                    'Contradiction',
+                    'Désaccord'
+                ],
             },
             impossible: {
                 'ANTICONSTITUTIONNELLEMENT': [

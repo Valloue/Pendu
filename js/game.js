@@ -69,7 +69,6 @@ class HangmanGame {
         this.ctx = this.canvas.getContext('2d');
         
         this.errors = 0;
-        this.hintsRemaining = 0; // Ajouter cette ligne
         this.initDifficultyButtons();
         this.initKeyboardEvents();
         this.init();
@@ -984,148 +983,6 @@ class HangmanGame {
                     'Souffle agréable'
                 ]
             },
-            difficile: {
-                'ABNEGATION': [
-                    'Renoncement volontaire',
-                    'Sacrifice de soi-même',
-                    'Abandon de ses intérêts personnels'
-                ],
-                'ABRICOTIER': [
-                    'Arbre fruitier',
-                    'Produit des fruits orange',
-                    'Famille des Rosacées'
-                ],
-                'ABYSSE': [
-                    'Profondeur océanique',
-                    'Gouffre sans fond',
-                    'Zone la plus profonde des océans'
-                ],
-                'ACROSTICHE': [
-                    'Type de poème',
-                    'Les premières lettres forment un mot',
-                    'Composition poétique particulière'
-                ],
-                'AGNOSTICISME': [
-                    'Position philosophique',
-                    'Ni croyant ni athée',
-                    'Doute sur l\'existence divine'
-                ],
-                'ASTERISQUE': [
-                    'Signe typographique',
-                    'Petite étoile',
-                    'Marque une note ou une référence'
-                ],
-                'BABILLARD': [
-                    'Personne qui parle beaucoup',
-                    'Bavard incessant',
-                    'Qui aime raconter des histoires'
-                ],
-                'BALSAMIQUE': [
-                    'Type de vinaigre',
-                    'Originaire de Modène',
-                    'Condiment italien précieux'
-                ],
-                'BALUSTRE': [
-                    'Élément architectural',
-                    'Petit pilier de rampe',
-                    'Support vertical décoratif'
-                ],
-                'BASKETBALL': [
-                    'Sport collectif',
-                    'Jeu avec un ballon',
-                    'Équipe de 5 joueurs'
-                ],
-                'BENEFIQUE': [
-                    'Personne qui bénéficie',
-                    'Qui reçoit un don',
-                    'Qui est dans l\'intérêt'
-                ],
-                'BROCANTEUR': [
-                    'Personne qui vend des objets',
-                    'Vend des choses usagées',
-                    'A un stand de marché'
-                ],
-                'CAMBRIOLEUSE': [
-                    'Personne qui change de voiture',
-                    'Vend des voitures d\'occasion',
-                    'A un stand de voitures'
-                ],
-                'CARACOLER': [
-                    'Personne qui se déplace lentement',
-                    'Marche comme une carapace',
-                    'A une carapace comme protection'
-                ],
-                'CHAMPAGNE': [
-                    'Boisson alcoolisée',
-                    'Produit de la région de Champagne',
-                    'Fête avec du champagne'
-                ],
-                'CHIMERE': [
-                    'Créature mythologique',
-                    'Combattant des dieux',
-                    'Féroce et redoutable'
-                ],
-                'CLANDESTIN': [
-                    'Secret et désordonné',
-                    'Sans loi',
-                    'Sans ordre'
-                ],
-                'CLOCHE': [
-                    'Instrument de signalisation',
-                    'Sonne à l\'heure',
-                    'A un clocheton'
-                ],
-                'COEXISTER': [
-                    'Vivre ensemble',
-                    'Coexistance',
-                    'Coopération'
-                ],
-                'CONTRAVENTION': [
-                    'Action en violation',
-                    'Contre la loi',
-                    'Défaut de respect'
-                ],
-                'CYBERSPACE': [
-                    'Monde virtuel',
-                    'Réseau informatique',
-                    'Espace de communication'
-                ],
-                'DEBACLE': [
-                    'Faillite',
-                    'Défaite totale',
-                    'Échec complet'
-                ],
-                'DESENCHANTEMENT': [
-                    'Perte de l\'enchantement',
-                    'Défaite de l\'illusion',
-                    'Échec de la magie'
-                ],
-                'DISSONANCE': [
-                    'Incohérence',
-                    'Contradiction',
-                    'Désaccord'
-                ],
-                'EBULLITION': [
-                    'Ébullition de l\'eau',
-                    'Boisson chaude',
-                    'Réaction chimique'
-                ],
-                'ELEPHANTIASIS': [
-                    'Maladie des éléphants',
-                    'Infection des éléphants',
-                    'Affection des éléphants'
-                ],
-                'DIPHTONGUE': [
-                    'Langue qui a deux sons',
-                    'Mots avec deux syllabes',
-                    'Expression qui utilise deux sons distincts'
-                ],
-                'DISSONANCE': [
-                    'Incohérence',
-                    'Contradiction',
-                    'Désaccord'
-                ],
-            },
             impossible: {
                 'ANTICONSTITUTIONNELLEMENT': [
                     'En opposition aux lois fondamentales',
@@ -1195,18 +1052,10 @@ class HangmanGame {
             }
         };
 
-        this.hintsRemaining = 0;
+        this.hintsRemaining = 3;
         this.initHintButton();
         this.isModalOpen = false;
         this.initModal();
-
-        const hintButton = document.getElementById('hintButton');
-        if (hintButton) {
-            hintButton.addEventListener('click', () => {
-                console.log('Difficulté actuelle lors du clic:', this.currentDifficulty);
-                this.getHint();
-            });
-        }
     }
 
     initDifficultyButtons() {
@@ -1236,11 +1085,7 @@ class HangmanGame {
         document.getElementById('usedLetters').textContent = '';
         
         // Réinitialisation des indices
-        this.hintsRemaining = 
-            this.currentDifficulty === 'facile' ? 3 :
-            this.currentDifficulty === 'intermediaire' ? 3 :
-            this.currentDifficulty === 'difficile' ? 3 : 0;
-            this.currentDifficulty === 'impossible' ? 3 : 0;
+        this.hintsRemaining = 3;
         const hintButton = document.getElementById('hintButton');
         const hintText = document.getElementById('hintText');
         
@@ -1253,9 +1098,6 @@ class HangmanGame {
     }
 
     init() {
-        console.log('Initialisation du jeu');
-        console.log('Difficulté actuelle:', this.currentDifficulty);
-        
         const words = this.difficulties[this.currentDifficulty].words;
         this.word = words[Math.floor(Math.random() * words.length)];
         this.remainingAttempts = this.difficulties[this.currentDifficulty].attempts;
@@ -1263,24 +1105,21 @@ class HangmanGame {
         this.updateWordDisplay();
         this.drawHangman();
         document.getElementById('attempts').textContent = this.remainingAttempts;
-        this.hintsRemaining = 3;
-        console.log('Nombre d\'indices initialisé:', this.hintsRemaining);
-        this.updateHintDisplay();
     }
 
     createKeyboard() {
         const keyboard = document.querySelector('.keyboard-row');
         keyboard.innerHTML = '';
         
-        // Définition du layout ABCD en 3 rangées
-        const abcdLayout = [
-            ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
-            ['K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S'],
-            ['T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+        // Définition du layout AZERTY en 3 rangées
+        const azertyLayout = [
+            ['A', 'Z', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+            ['Q', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M'],
+            ['W', 'X', 'C', 'V', 'B', 'N']
         ];
 
         // Création des rangées
-        abcdLayout.forEach(row => {
+        azertyLayout.forEach(row => {
             const rowDiv = document.createElement('div');
             rowDiv.className = 'keyboard-row';
             
@@ -1371,58 +1210,19 @@ class HangmanGame {
     }
 
     getHint() {
-        console.log('Début getHint');
-        console.log('Indices restants:', this.hintsRemaining);
-        console.log('Mot actuel:', this.word);
-
-        if (this.hintsRemaining <= 0) {
-            alert('Vous n\'avez plus d\'indices disponibles !');
-            return;
-        }
-
-        // Vérification que this.hints et this.difficulty existent
-        if (!this.hints || !this.hints[this.currentDifficulty]) {
-            console.error('Erreur: hints ou difficulty non définis');
-            return;
-        }
-
-        const availableHints = this.hints[this.currentDifficulty][this.word];
-        console.log('Indices disponibles:', availableHints);
-
-        if (!availableHints || availableHints.length === 0) {
-            console.error('Aucun indice trouvé pour ce mot');
-            return;
-        }
-
-        // Filtrer les indices non utilisés
-        const usedHints = new Set(this.usedHints || []);
-        const unusedHints = availableHints.filter(hint => !usedHints.has(hint));
+        const hints = this.hints[this.currentDifficulty];
+        const wordHints = hints[this.word];
         
-        if (unusedHints.length > 0) {
-            const hint = unusedHints[Math.floor(Math.random() * unusedHints.length)];
-            // Initialiser this.usedHints s'il n'existe pas
-            if (!this.usedHints) {
-                this.usedHints = [];
-            }
-            this.usedHints.push(hint);
-            this.hintsRemaining--;
-            this.updateHintDisplay();
-            
-            // Utiliser une div pour afficher l'indice au lieu d'une alerte
-            const hintDisplay = document.getElementById('hintDisplay') || document.createElement('div');
-            hintDisplay.id = 'hintDisplay';
-            hintDisplay.textContent = `Indice : ${hint}`;
-            hintDisplay.style.color = 'var(--neon-purple)';
-            hintDisplay.style.marginTop = '10px';
-            hintDisplay.style.textAlign = 'center';
-            
-            // Ajouter l'élément s'il n'existe pas déjà
-            if (!document.getElementById('hintDisplay')) {
-                document.querySelector('.game-container').appendChild(hintDisplay);
-            }
-        } else {
-            alert('Vous avez déjà utilisé tous les indices disponibles pour ce mot !');
+        if (!wordHints) {
+            console.log('Mot actuel:', this.word);
+            console.log('Difficulté actuelle:', this.currentDifficulty);
+            console.log('Indices disponibles:', Object.keys(hints));
+            return `Indice ${3 - this.hintsRemaining}/3 : Désolé, pas d'indice disponible pour ce mot`;
         }
+        
+        // Utilise l'indice correspondant au nombre d'indices restants
+        const hintIndex = 2 - this.hintsRemaining; // 2,1,0 pour les trois indices
+        return `Indice ${3 - this.hintsRemaining}/3 : ${wordHints[hintIndex]}`;
     }
 
     drawHangman() {
@@ -1609,19 +1409,6 @@ class HangmanGame {
         if (/^[A-Z]$/.test(letter)) {
             this.handleGuess(letter);
         }
-    }
-
-    updateHintDisplay() {
-        const hintElement = document.getElementById('hints');
-        if (hintElement) {
-            hintElement.textContent = `Indices restants : ${this.hintsRemaining}`;
-        }
-    }
-
-    setDifficulty(difficulty) {
-        console.log('Changement de difficulté vers:', difficulty);
-        this.currentDifficulty = difficulty;
-        this.initGame();
     }
 }
 

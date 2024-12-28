@@ -1,4 +1,4 @@
 git status
 git add .
-git commit -m "Ajout: indice"
+git commit -m "restaure"
 git push origin main

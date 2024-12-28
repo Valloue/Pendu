@@ -1236,7 +1236,11 @@ class HangmanGame {
         document.getElementById('usedLetters').textContent = '';
         
         // Réinitialisation des indices
-        this.hintsRemaining = 0;
+        this.hintsRemaining = 
+            this.currentDifficulty === 'facile' ? 3 :
+            this.currentDifficulty === 'intermediaire' ? 3 :
+            this.currentDifficulty === 'difficile' ? 3 : 0;
+            this.currentDifficulty === 'impossible' ? 3 : 0;
         const hintButton = document.getElementById('hintButton');
         const hintText = document.getElementById('hintText');
         

@@ -1263,10 +1263,7 @@ class HangmanGame {
         this.updateWordDisplay();
         this.drawHangman();
         document.getElementById('attempts').textContent = this.remainingAttempts;
-        this.hintsRemaining = 
-            this.currentDifficulty === 'facile' ? 3 :
-            this.currentDifficulty === 'intermediaire' ? 2 :
-            this.currentDifficulty === 'difficile' ? 1 : 0;
+        this.hintsRemaining = 3;
         console.log('Nombre d\'indices initialisé:', this.hintsRemaining);
         this.updateHintDisplay();
     }
@@ -1374,21 +1371,17 @@ class HangmanGame {
     }
 
     getHint() {
-        console.log('Début getHint');
-        console.log('Difficulté:', this.currentDifficulty);
+        console.log('Demande d\'indice');
         console.log('Indices restants:', this.hintsRemaining);
         console.log('Mot actuel:', this.word);
-        console.log('Indices disponibles:', this.hints?.[this.currentDifficulty]?.[this.word]);
 
         if (this.hintsRemaining <= 0) {
-            console.log('Pas d\'indices restants');
             alert('Vous n\'avez plus d\'indices disponibles !');
             return;
         }
 
         const availableHints = this.hints[this.currentDifficulty][this.word];
-        console.log('Hints trouvés:', availableHints);
-
+        
         if (!availableHints || availableHints.length === 0) {
             console.log('Aucun indice trouvé pour ce mot');
             return;
@@ -1403,6 +1396,8 @@ class HangmanGame {
             this.hintsRemaining--;
             this.updateHintDisplay();
             alert(hint);
+        } else {
+            alert('Vous avez déjà utilisé tous les indices disponibles pour ce mot !');
         }
     }
 

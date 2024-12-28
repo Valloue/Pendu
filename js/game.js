@@ -1199,6 +1199,14 @@ class HangmanGame {
         this.initHintButton();
         this.isModalOpen = false;
         this.initModal();
+
+        const hintButton = document.getElementById('hintButton');
+        if (hintButton) {
+            hintButton.addEventListener('click', () => {
+                console.log('Difficulté actuelle lors du clic:', this.currentDifficulty);
+                this.getHint();
+            });
+        }
     }
 
     initDifficultyButtons() {
@@ -1241,6 +1249,9 @@ class HangmanGame {
     }
 
     init() {
+        console.log('Initialisation du jeu');
+        console.log('Difficulté actuelle:', this.currentDifficulty);
+        
         const words = this.difficulties[this.currentDifficulty].words;
         this.word = words[Math.floor(Math.random() * words.length)];
         this.remainingAttempts = this.difficulties[this.currentDifficulty].attempts;
@@ -1248,9 +1259,11 @@ class HangmanGame {
         this.updateWordDisplay();
         this.drawHangman();
         document.getElementById('attempts').textContent = this.remainingAttempts;
-        this.hintsRemaining = this.currentDifficulty === 'difficile' ? 1 : 
-                             this.currentDifficulty === 'intermediaire' ? 2 : 
-                             this.currentDifficulty === 'facile' ? 3 : 0;
+        this.hintsRemaining = 
+            this.currentDifficulty === 'facile' ? 3 :
+            this.currentDifficulty === 'intermediaire' ? 2 :
+            this.currentDifficulty === 'difficile' ? 1 : 0;
+        console.log('Nombre d\'indices initialisé:', this.hintsRemaining);
         this.updateHintDisplay();
     }
 
@@ -1358,10 +1371,10 @@ class HangmanGame {
 
     getHint() {
         console.log('Début getHint');
-        console.log('Difficulté:', this.difficulty);
+        console.log('Difficulté:', this.currentDifficulty);
         console.log('Indices restants:', this.hintsRemaining);
         console.log('Mot actuel:', this.word);
-        console.log('Indices disponibles:', this.hints?.[this.difficulty]?.[this.word]);
+        console.log('Indices disponibles:', this.hints?.[this.currentDifficulty]?.[this.word]);
 
         if (this.hintsRemaining <= 0) {
             console.log('Pas d\'indices restants');
@@ -1369,7 +1382,7 @@ class HangmanGame {
             return;
         }
 
-        const availableHints = this.hints[this.difficulty][this.word];
+        const availableHints = this.hints[this.currentDifficulty][this.word];
         console.log('Hints trouvés:', availableHints);
 
         if (!availableHints || availableHints.length === 0) {
@@ -1580,6 +1593,12 @@ class HangmanGame {
         if (hintElement) {
             hintElement.textContent = `Indices restants : ${this.hintsRemaining}`;
         }
+    }
+
+    setDifficulty(difficulty) {
+        console.log('Changement de difficulté vers:', difficulty);
+        this.currentDifficulty = difficulty;
+        this.initGame();
     }
 }
 

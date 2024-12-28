@@ -1052,7 +1052,7 @@ class HangmanGame {
             }
         };
 
-        this.hintsRemaining = 3;
+        this.hintsRemaining = 0;
         this.initHintButton();
         this.isModalOpen = false;
         this.initModal();
@@ -1085,7 +1085,7 @@ class HangmanGame {
         document.getElementById('usedLetters').textContent = '';
         
         // Réinitialisation des indices
-        this.hintsRemaining = 3;
+        this.hintsRemaining = 0;
         const hintButton = document.getElementById('hintButton');
         const hintText = document.getElementById('hintText');
         
@@ -1105,6 +1105,10 @@ class HangmanGame {
         this.updateWordDisplay();
         this.drawHangman();
         document.getElementById('attempts').textContent = this.remainingAttempts;
+        this.hintsRemaining = this.currentDifficulty === 'difficile' ? 1 : 
+                             this.currentDifficulty === 'intermediaire' ? 2 : 
+                             this.currentDifficulty === 'facile' ? 3 : 0;
+        this.updateHintDisplay();
     }
 
     createKeyboard() {
@@ -1210,6 +1214,11 @@ class HangmanGame {
     }
 
     getHint() {
+        if (this.hintsRemaining <= 0) {
+            alert('Vous n\'avez plus d\'indices disponibles !');
+            return;
+        }
+
         const hints = this.hints[this.currentDifficulty];
         const wordHints = hints[this.word];
         
@@ -1222,7 +1231,10 @@ class HangmanGame {
         
         // Utilise l'indice correspondant au nombre d'indices restants
         const hintIndex = 2 - this.hintsRemaining; // 2,1,0 pour les trois indices
-        return `Indice ${3 - this.hintsRemaining}/3 : ${wordHints[hintIndex]}`;
+        const hint = `Indice ${3 - this.hintsRemaining}/3 : ${wordHints[hintIndex]}`;
+        this.hintsRemaining--;
+        this.updateHintDisplay();
+        return hint;
     }
 
     drawHangman() {
@@ -1408,6 +1420,13 @@ class HangmanGame {
         // Vérifie si c'est une lettre de A à Z
         if (/^[A-Z]$/.test(letter)) {
             this.handleGuess(letter);
+        }
+    }
+
+    updateHintDisplay() {
+        const hintElement = document.getElementById('hints');
+        if (hintElement) {
+            hintElement.textContent = `Indices restants : ${this.hintsRemaining}`;
         }
     }
 }

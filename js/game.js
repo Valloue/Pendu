@@ -1211,24 +1211,19 @@ class HangmanGame {
     async loadWordsFromFirebase() {
         try {
             const words = await FirebaseManager.getWords();
-            if (words) {  // Si on a réussi à récupérer les mots de Firebase
-                words.forEach(wordData => {
-                    if (this.difficulties[wordData.difficulty]) {
-                        // Ajoute le mot au niveau de difficulté approprié
-                        if (!this.difficulties[wordData.difficulty].words.includes(wordData.word)) {
-                            this.difficulties[wordData.difficulty].words.push(wordData.word);
-                        }
-                        // Ajoute les indices
-                        if (!this.hints[wordData.difficulty]) {
-                            this.hints[wordData.difficulty] = {};
-                        }
-                        this.hints[wordData.difficulty][wordData.word] = wordData.hints;
+            words.forEach(wordData => {
+                if (this.difficulties[wordData.difficulty]) {
+                    // Ajoute le mot au niveau de difficulté approprié
+                    this.difficulties[wordData.difficulty].words.push(wordData.word);
+                    // Ajoute les indices
+                    if (!this.hints[wordData.difficulty]) {
+                        this.hints[wordData.difficulty] = {};
                     }
-                });
-            }
+                    this.hints[wordData.difficulty][wordData.word] = wordData.hints;
+                }
+            });
         } catch (error) {
             console.error("Erreur lors du chargement des mots:", error);
-            // Continue avec les mots locaux en cas d'erreur
         }
     }
 
@@ -1594,20 +1589,20 @@ class HangmanGame {
         const form = document.getElementById('commentForm');
 
         if (!modal || !commentButton || !closeBtn || !form) {
-            console.error('Éléments de la modal commentaire non trouvés');
+            console.error('Éléments de la modal de commentaire non trouvés');
             return;
         }
 
         // Ouvre la modal
         commentButton.addEventListener('click', () => {
             modal.style.display = 'block';
-            this.isModalOpen = true;
+            this.isCommentModalOpen = true;
         });
 
         // Ferme la modal
         const closeModal = () => {
             modal.style.display = 'none';
-            this.isModalOpen = false;
+            this.isCommentModalOpen = false;
         };
 
         closeBtn.addEventListener('click', closeModal);

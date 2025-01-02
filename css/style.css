@@ -616,3 +616,62 @@ form button[type="submit"]:hover {
     outline: none;
     box-shadow: 0 0 15px var(--neon-blue);
 }
+
+/* Style pour le bouton commentaire */
+.comment-btn {
+    width: 60px;
+    height: 60px;
+    background: transparent;
+    color: var(--neon-purple);
+    border: 3px solid var(--neon-purple);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 28px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px var(--neon-purple);
+}
+
+.comment-btn:hover {
+    background: var(--neon-purple);
+    color: var(--dark-bg);
+    box-shadow: 0 0 30px var(--neon-purple);
+}
+
+/* Style pour la modal de commentaire */
+#commentModal .modal-content {
+    max-width: 500px;
+}
+
+#commentForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#commentForm input,
+#commentForm textarea {
+    padding: 12px;
+    background: transparent;
+    border: 2px solid var(--neon-purple);
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    border-radius: 5px;
+}
+
+#commentForm textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+#commentForm input:focus,
+#commentForm textarea:focus {
+    outline: none;
+    box-shadow: 0 0 15px var(--neon-purple);
+}

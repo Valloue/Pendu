@@ -30,6 +30,9 @@
         <div class="button-container">
             <button class="hint-btn" id="hintButton"><span>Obtenir un indice</span></button>
             <button class="add-btn" id="addButton">+</button>
+            <button class="comment-btn" aria-label="Ajouter un commentaire">
+                <span>💭</span>
+            </button>
         </div>
         <div id="hintText"></div>
 
@@ -56,27 +59,15 @@
         
         <div class="keyboard-row"></div>
 
-        <!-- Bouton pour ouvrir la modal des commentaires -->
-        <button class="comment-btn">Ajouter un commentaire</button>
-
         <!-- Modal pour les commentaires -->
         <div id="commentModal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
                 <h2>Ajouter un commentaire</h2>
                 <form id="commentForm">
-                    <div class="form-group">
-                        <label for="commentObject">Objet :</label>
-                        <input type="text" id="commentObject" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="commentText">Commentaire :</label>
-                        <textarea id="commentText" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="commentEmail">Email :</label>
-                        <input type="email" id="commentEmail" required>
-                    </div>
+                    <input type="text" id="commentObject" placeholder="Objet du commentaire" required>
+                    <textarea id="commentText" placeholder="Votre commentaire" required></textarea>
+                    <input type="email" id="commentEmail" placeholder="Votre email" required>
                     <button type="submit">Envoyer</button>
                 </form>
             </div>

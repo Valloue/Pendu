@@ -10,54 +10,36 @@ const firebaseConfig = {
 };
 
 // Initialisation de Firebase
-const app = firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore(app);
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
-// Gestionnaire Firebase avec gestion d'erreurs améliorée
+// Modification de la classe HangmanGame pour utiliser Firebase
 class FirebaseManager {
     static async addWord(wordData) {
         try {
-            // Vérification des données avant l'envoi
-            if (!wordData.word || !wordData.difficulty) {
-                throw new Error('Données manquantes');
-            }
-
-            // Formatage des données
-            const data = {
+            await db.collection('words').add({
                 word: wordData.word.toUpperCase(),
-                hints: [
-                    wordData.hint1 || '',
-                    wordData.hint2 || '',
-                    wordData.hint3 || ''
-                ],
+                hints: [wordData.hint1, wordData.hint2, wordData.hint3],
                 difficulty: wordData.difficulty,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            };
-
-            // Ajout du document dans la collection appropriée
-            await db.collection('words').doc(wordData.word).set(data);
-            console.log('Mot ajouté avec succès:', wordData.word);
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
             return true;
         } catch (error) {
             console.error("Erreur lors de l'ajout du mot:", error);
-            throw error; // Propage l'erreur pour une meilleure gestion
+            return false;
         }
     }
 
     static async getWords() {
         try {
             const snapshot = await db.collection('words').get();
-            const words = [];
-            snapshot.forEach(doc => {
-                words.push({
-                    id: doc.id,
-                    ...doc.data()
-                });
-            });
-            return words;
+            return snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
         } catch (error) {
             console.error("Erreur lors de la récupération des mots:", error);
-            throw error;
+            return [];
         }
     }
 

@@ -62,10 +62,10 @@
         <!-- Modal pour les commentaires -->
         <div id="commentModal" class="modal">
             <div class="modal-content">
-                <span class="close">&times;</span>
+                <span class="close" onclick="closeCommentModal()">&times;</span>
                 <h2>Ajouter un commentaire</h2>
                 <form id="commentForm">
-                    <input type="text" id="commentObject" placeholder="Objet du commentaire" required>
+                    <input type="text" id="commentObject" placeholder="Objet" required>
                     <textarea id="commentText" placeholder="Votre commentaire" required></textarea>
                     <input type="email" id="commentEmail" placeholder="Votre email" required>
                     <button type="submit">Envoyer</button>
@@ -73,6 +73,8 @@
             </div>
         </div>
     </div>
+
+    <div id="notification" class="notification"></div>
 
     <script src="js/game.js"></script>
     <!-- Firebase SDK -->

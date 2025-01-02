@@ -721,9 +721,9 @@ body {
     justify-content: center;
     gap: 5px;
     margin: 3px 0;
-    width: 100%; /* Assure que la rangée prend toute la largeur */
+    width: 100%;
     display: flex;
-    justify-content: center; /* Centre les touches horizontalement */
+    justify-content: center;
 }
 
 .key {
@@ -736,7 +736,6 @@ body {
     margin: 0;
 }
 
-/* Ajustements pour la version mobile */
 @media screen and (max-width: 768px) {
     .keyboard {
         padding: 5px;
@@ -945,12 +944,47 @@ body {
     }
 }
 
+.comment-btn {
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 24px;
+}
+
 /* Ajout d'un conteneur pour le clavier */
 .keyboard-container {
     width: 100%;
-    max-width: 1000px; /* Limite la largeur maximale */
-    margin: 0 auto; /* Centre le clavier horizontalement */
+    max-width: 1000px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 5px;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    transform: translateX(150%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 2000;
+}
+
+.notification.success {
+    background: rgba(0, 255, 0, 0.2);
+    border: 2px solid var(--neon-green);
+    box-shadow: 0 0 15px var(--neon-green);
+}
+
+.notification.error {
+    background: rgba(255, 0, 0, 0.2);
+    border: 2px solid var(--neon-pink);
+    box-shadow: 0 0 15px var(--neon-pink);
+}
+
+.notification.show {
+    transform: translateX(0);
 }

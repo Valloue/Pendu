@@ -1282,9 +1282,8 @@ class HangmanGame {
         
         // Nouvelle disposition plus compacte sur 2 lignes
         const abcdLayout = [
-            ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
-            ['K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S'],
-            ['T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+            ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'],
+            ['N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
         ];
 
         // Création des rangées
@@ -1539,7 +1538,7 @@ class HangmanGame {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = {
-                word: document.getElementById('newWord').value.toUpperCase(), // Conversion en majuscules
+                word: document.getElementById('newWord').value.toUpperCase(),
                 hint1: document.getElementById('hint1').value,
                 hint2: document.getElementById('hint2').value,
                 hint3: document.getElementById('hint3').value,
@@ -1549,7 +1548,7 @@ class HangmanGame {
             try {
                 const success = await FirebaseManager.addWord(formData);
                 if (success) {
-                    // Ajoute le mot localement aussi
+                    // Ajoute le mot localement
                     if (this.difficulties[formData.difficulty]) {
                         this.difficulties[formData.difficulty].words.push(formData.word);
                         if (!this.hints[formData.difficulty]) {
@@ -1558,15 +1557,15 @@ class HangmanGame {
                         this.hints[formData.difficulty][formData.word] = [formData.hint1, formData.hint2, formData.hint3];
                     }
                     
-                    alert('Mot ajouté avec succès !');
+                    showNotification('Mot ajouté avec succès !', 'success');
                     form.reset();
                     closeModal();
                 } else {
-                    alert('Erreur lors de l\'ajout du mot');
+                    showNotification('Erreur lors de l\'ajout du mot', 'error');
                 }
             } catch (error) {
                 console.error('Erreur:', error);
-                alert('Erreur lors de l\'ajout du mot');
+                showNotification('Erreur lors de l\'ajout du mot', 'error');
             }
         });
     }
@@ -1623,17 +1622,52 @@ class HangmanGame {
             };
 
             try {
+                console.log('Tentative d\'ajout du commentaire:', commentData); // Debug
                 const success = await FirebaseManager.addComment(commentData);
-                if (success) {
-                    alert('Commentaire ajouté avec succès !');
-                    form.reset();
-                    closeModal();
-                }
+                console.log('Résultat de l\'ajout:', success); // Debug
+                
+                // Puisque FirebaseManager.addComment ne lance pas d'erreur si ça réussit,
+                // on peut simplifier la logique
+                showNotification('Commentaire ajouté avec succès !', 'success');
+                document.getElementById('commentForm').reset();
+                closeModal();
             } catch (error) {
-                console.error('Erreur:', error);
-                alert('Erreur lors de l\'ajout du commentaire');
+                console.error('Erreur détaillée:', error); // Debug plus détaillé
+                showNotification('Erreur lors de l\'ajout du commentaire', 'error');
             }
         });
+    }
+
+    initCommentForm() {
+        const form = document.getElementById('commentForm');
+        if (form) {
+            // Supprimer les gestionnaires d'événements existants
+            form.removeEventListener('submit', this.handleCommentSubmit);
+            // Ajouter le nouveau gestionnaire
+            form.addEventListener('submit', this.handleCommentSubmit);
+        }
+    }
+
+    async handleCommentSubmit(event) {
+        event.preventDefault();
+        const commentData = {
+            object: document.getElementById('commentObject').value,
+            text: document.getElementById('commentText').value,
+            email: document.getElementById('commentEmail').value
+        };
+
+        try {
+            console.log('Tentative d\'ajout du commentaire:', commentData);
+            const success = await FirebaseManager.addComment(commentData);
+            console.log('Résultat de l\'ajout:', success);
+            
+            showNotification('Commentaire ajouté avec succès !', 'success');
+            document.getElementById('commentForm').reset();
+            closeCommentModal();
+        } catch (error) {
+            console.error('Erreur détaillée:', error);
+            showNotification('Erreur lors de l\'ajout du commentaire', 'error');
+        }
     }
 }
 
@@ -1641,3 +1675,45 @@ class HangmanGame {
 document.addEventListener('DOMContentLoaded', () => {
     new HangmanGame();
 });
+
+// Ajoutez cette fonction pour gérer les notifications
+function showNotification(message, type) {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.className = `notification ${type}`;
+    
+    // Force le navigateur à recalculer le style pour l'animation
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 10);
+
+    // Cache la notification après 3 secondes
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 3000);
+}
+
+// Ajoutez cette fonction pour gérer le formulaire de commentaire
+async function handleCommentSubmit(event) {
+    event.preventDefault();
+    const commentData = {
+        object: document.getElementById('commentObject').value,
+        text: document.getElementById('commentText').value,
+        email: document.getElementById('commentEmail').value
+    };
+
+    try {
+        console.log('Tentative d\'ajout du commentaire:', commentData); // Debug
+        const success = await FirebaseManager.addComment(commentData);
+        console.log('Résultat de l\'ajout:', success); // Debug
+        
+        // Puisque FirebaseManager.addComment ne lance pas d'erreur si ça réussit,
+        // on peut simplifier la logique
+        showNotification('Commentaire ajouté avec succès !', 'success');
+        document.getElementById('commentForm').reset();
+        closeCommentModal();
+    } catch (error) {
+        console.error('Erreur détaillée:', error); // Debug plus détaillé
+        showNotification('Erreur lors de l\'ajout du commentaire', 'error');
+    }
+}

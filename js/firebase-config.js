@@ -45,7 +45,10 @@ class FirebaseManager {
 
     static async addComment(commentData) {
         try {
+            console.log('Début de l\'ajout du commentaire'); // Debug
+            
             if (!commentData.object || !commentData.text || !commentData.email) {
+                console.error('Données manquantes:', commentData); // Debug
                 throw new Error('Données manquantes');
             }
 
@@ -56,12 +59,12 @@ class FirebaseManager {
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             };
 
-            await db.collection('comments').add(data);
-            console.log('Commentaire ajouté avec succès');
+            const docRef = await db.collection('comments').add(data);
+            console.log('Commentaire ajouté avec succès, ID:', docRef.id); // Debug
             return true;
         } catch (error) {
-            console.error("Erreur lors de l'ajout du commentaire:", error);
-            throw error;
+            console.error("Erreur détaillée lors de l'ajout du commentaire:", error); // Debug
+            return Promise.reject(error); // Propagation explicite de l'erreur
         }
     }
 } 

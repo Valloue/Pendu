@@ -1203,6 +1203,32 @@ class HangmanGame {
         this.initHintButton();
         this.isModalOpen = false;
         this.initModal();
+
+        this.loadWordsFromFirebase();
+    }
+
+    async loadWordsFromFirebase() {
+        try {
+            const words = await FirebaseManager.getWords();
+            if (words) {  // Si on a réussi à récupérer les mots de Firebase
+                words.forEach(wordData => {
+                    if (this.difficulties[wordData.difficulty]) {
+                        // Ajoute le mot au niveau de difficulté approprié
+                        if (!this.difficulties[wordData.difficulty].words.includes(wordData.word)) {
+                            this.difficulties[wordData.difficulty].words.push(wordData.word);
+                        }
+                        // Ajoute les indices
+                        if (!this.hints[wordData.difficulty]) {
+                            this.hints[wordData.difficulty] = {};
+                        }
+                        this.hints[wordData.difficulty][wordData.word] = wordData.hints;
+                    }
+                });
+            }
+        } catch (error) {
+            console.error("Erreur lors du chargement des mots:", error);
+            // Continue avec les mots locaux en cas d'erreur
+        }
     }
 
     initDifficultyButtons() {
@@ -1517,7 +1543,7 @@ class HangmanGame {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = {
-                word: document.getElementById('newWord').value,
+                word: document.getElementById('newWord').value.toUpperCase(), // Conversion en majuscules
                 hint1: document.getElementById('hint1').value,
                 hint2: document.getElementById('hint2').value,
                 hint3: document.getElementById('hint3').value,
@@ -1525,15 +1551,17 @@ class HangmanGame {
             };
 
             try {
-                const response = await fetch('/api/words', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
-
-                if (response.ok) {
+                const success = await FirebaseManager.addWord(formData);
+                if (success) {
+                    // Ajoute le mot localement aussi
+                    if (this.difficulties[formData.difficulty]) {
+                        this.difficulties[formData.difficulty].words.push(formData.word);
+                        if (!this.hints[formData.difficulty]) {
+                            this.hints[formData.difficulty] = {};
+                        }
+                        this.hints[formData.difficulty][formData.word] = [formData.hint1, formData.hint2, formData.hint3];
+                    }
+                    
                     alert('Mot ajouté avec succès !');
                     form.reset();
                     closeModal();

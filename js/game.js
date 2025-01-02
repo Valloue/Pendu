@@ -983,6 +983,153 @@ class HangmanGame {
                     'Souffle agréable'
                 ]
             },
+            difficile: {
+                'ABNEGATION': [
+                    'Renoncement volontaire',
+                    'Sacrifice de soi',
+                    'Oubli de ses intérêts personnels'
+                ],
+                'ABRICOTIER': [
+                    'Arbre fruitier',
+                    'Donne des fruits orange',
+                    'Fleurit au printemps'
+                ],
+                'ABYSSE': [
+                    'Gouffre très profond',
+                    'Dans les océans',
+                    'Zone la plus profonde des mers'
+                ],
+                'ACROSTICHE': [
+                    'Forme de poésie',
+                    'Les premières lettres forment un mot',
+                    'Jeu d\'écriture vertical'
+                ],
+                'AGNOSTICISME': [
+                    'Position philosophique',
+                    'Doute de l\'existence divine',
+                    'Entre athéisme et théisme'
+                ],
+                'ASTERISQUE': [
+                    'Signe typographique',
+                    'Petite étoile dans un texte',
+                    'Marque une note ou référence'
+                ],
+                'BABILLARD': [
+                    'Personne qui parle beaucoup',
+                    'Bavard incessant',
+                    'Qui aime raconter sans arrêt'
+                ],
+                'BALSAMIQUE': [
+                    'Type de vinaigre',
+                    'Originaire d\'Italie',
+                    'Condiment noir et sucré'
+                ],
+                'BALUSTRE': [
+                    'Élément architectural',
+                    'Petit pilier de rampe',
+                    'Soutient une rambarde'
+                ],
+                'BASKETBALL': [
+                    'Sport collectif',
+                    'Se joue avec un ballon orange',
+                    'But de marquer des paniers'
+                ],
+                'BENEFIQUE': [
+                    'Qui fait du bien',
+                    'Apporte des avantages',
+                    'Effet positif'
+                ],
+                'BROCANTEUR': [
+                    'Vendeur d\'objets anciens',
+                    'Commerce d\'occasions',
+                    'Chine les vieilleries'
+                ],
+                'CAMBRIOLEUSE': [
+                    'Voleuse professionnelle',
+                    'S\'introduit par effraction',
+                    'Version féminine du cambrioleur'
+                ],
+                'CARACOLER': [
+                    'Avancer en bondissant',
+                    'Mouvement du cheval',
+                    'Se déplacer avec fierté'
+                ],
+                'CHAMPAGNE': [
+                    'Vin pétillant français',
+                    'Pour les célébrations',
+                    'De la région de Reims'
+                ],
+                'CHIMERE': [
+                    'Créature mythologique',
+                    'Mélange de plusieurs animaux',
+                    'Illusion, rêve impossible'
+                ],
+                'CLANDESTIN': [
+                    'En cachette',
+                    'Non autorisé officiellement',
+                    'Agit dans l\'ombre'
+                ],
+                'CLOCHE': [
+                    'Instrument sonore',
+                    'Sonne dans les églises',
+                    'Fait ding-dong'
+                ],
+                'COEXISTER': [
+                    'Vivre ensemble',
+                    'Exister simultanément',
+                    'Partager un même espace'
+                ],
+                'CONTEXTE': [
+                    'Ensemble des circonstances',
+                    'Environnement d\'un fait',
+                    'Situation globale'
+                ],
+                'CONTRAVENTION': [
+                    'Amende',
+                    'Sanction pour infraction',
+                    'Ticket de la police'
+                ],
+                'CYBERSPACE': [
+                    'Espace virtuel',
+                    'Monde numérique',
+                    'Univers d\'Internet'
+                ],
+                'DEBACLE': [
+                    'Grande défaite',
+                    'Effondrement total',
+                    'Échec catastrophique'
+                ],
+                'DESENCHANTEMENT': [
+                    'Perte d\'illusions',
+                    'Fin de la magie',
+                    'Déception profonde'
+                ],
+                'DILIGENCE': [
+                    'Ancienne voiture hippomobile',
+                    'Transport du passé',
+                    'Ancêtre des bus'
+                ],
+                'DIPHTONGUE': [
+                    'Son voyelle complexe',
+                    'Deux sons en une syllabe',
+                    'Élément phonétique'
+                ],
+                'DISSONANCE': [
+                    'Manque d\'harmonie',
+                    'Sons qui ne s\'accordent pas',
+                    'Désaccord musical'
+                ],
+                'EBULLITION': [
+                    'État de ce qui bout',
+                    'Formation de bulles',
+                    'Température maximale d\'un liquide'
+                ],
+                'ELEPHANTIASIS': [
+                    'Maladie tropicale',
+                    'Gonflement des membres',
+                    'Affection parasitaire'
+                ]
+            },
             impossible: {
                 'ANTICONSTITUTIONNELLEMENT': [
                     'En opposition aux lois fondamentales',
@@ -1111,15 +1258,15 @@ class HangmanGame {
         const keyboard = document.querySelector('.keyboard-row');
         keyboard.innerHTML = '';
         
-        // Définition du layout AZERTY en 3 rangées
-        const azertyLayout = [
-            ['A', 'Z', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
-            ['Q', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M'],
-            ['W', 'X', 'C', 'V', 'B', 'N']
+        // Définition du layout ABCD en 3 rangées
+        const abcdLayout = [
+            ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
+            ['K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T'],
+            ['U', 'V', 'W', 'X', 'Y', 'Z']
         ];
 
         // Création des rangées
-        azertyLayout.forEach(row => {
+        abcdLayout.forEach(row => {
             const rowDiv = document.createElement('div');
             rowDiv.className = 'keyboard-row';
             

@@ -915,3 +915,61 @@ body {
         margin: 5px 0;
     }
 }
+
+/* Style amélioré pour le clavier en mode portrait */
+@media screen and (max-width: 768px) and (orientation: portrait) {
+    .keyboard {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: var(--dark-bg);
+        padding: 10px 5px;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .keyboard-row {
+        display: flex;
+        justify-content: center;
+        gap: 3px;
+        margin: 0;
+        padding: 0;
+    }
+
+    .key {
+        width: 32px; /* Augmentation de la taille des touches */
+        height: 32px;
+        font-size: 16px;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Ajustement pour la dernière rangée (plus courte) */
+    .keyboard-row:last-child {
+        padding: 0 20px; /* Ajoute un peu d'espace sur les côtés */
+    }
+
+    /* Ajustement de l'espace au-dessus du clavier */
+    .button-container {
+        margin-bottom: 180px; /* Augmentation de l'espace pour le clavier */
+    }
+
+    /* Assurer que le contenu au-dessus du clavier est visible */
+    .game-container {
+        padding-bottom: 200px;
+    }
+}
+
+/* Ajustements pour les très petits écrans en mode portrait */
+@media screen and (max-width: 320px) and (orientation: portrait) {
+    .key {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+    }
+}

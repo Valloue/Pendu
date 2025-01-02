@@ -1280,11 +1280,11 @@ class HangmanGame {
         const keyboard = document.querySelector('.keyboard-row');
         keyboard.innerHTML = '';
         
-        // Définition du layout ABCD en 3 rangées
+        // Nouvelle disposition plus compacte sur 2 lignes
         const abcdLayout = [
             ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
-            ['K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T'],
-            ['U', 'V', 'W', 'X', 'Y', 'Z']
+            ['K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S'],
+            ['T', 'U', 'V', 'W', 'X', 'Y', 'Z']
         ];
 
         // Création des rangées

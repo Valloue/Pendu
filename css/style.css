@@ -755,3 +755,92 @@ body {
         height: 50px;
     }
 }
+
+/* Ajustements pour le format mobile */
+@media screen and (max-width: 768px) {
+    .game-container {
+        padding: 10px;
+        margin: 0;
+        width: 100%;
+        max-width: 100%;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    h1 {
+        font-size: 1.8em;
+        margin: 10px 0;
+    }
+
+    .difficulty-container {
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+
+    .difficulty-btn {
+        padding: 8px 15px;
+        font-size: 0.9em;
+    }
+
+    #wordDisplay {
+        font-size: 1.8em;
+        letter-spacing: 4px;
+        margin: 15px 0;
+    }
+
+    .keyboard {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: var(--dark-bg);
+        padding: 10px 5px;
+        margin: 0;
+    }
+
+    .keyboard-row {
+        margin: 2px 0;
+    }
+
+    .key {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+        margin: 2px;
+    }
+
+    .button-container {
+        margin-bottom: 150px; /* Espace pour le clavier */
+    }
+
+    canvas {
+        max-width: 100%;
+        height: auto;
+        margin: 10px auto;
+    }
+
+    #usedLetters {
+        font-size: 0.9em;
+        margin: 5px 0;
+    }
+}
+
+/* Ajustements supplémentaires pour les très petits écrans */
+@media screen and (max-width: 320px) {
+    .key {
+        width: 24px;
+        height: 24px;
+        font-size: 12px;
+    }
+
+    h1 {
+        font-size: 1.5em;
+    }
+
+    #wordDisplay {
+        font-size: 1.5em;
+        letter-spacing: 3px;
+    }
+}

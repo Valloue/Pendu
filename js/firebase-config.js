@@ -60,4 +60,26 @@ class FirebaseManager {
             throw error;
         }
     }
+
+    static async addComment(commentData) {
+        try {
+            if (!commentData.object || !commentData.text || !commentData.email) {
+                throw new Error('Données manquantes');
+            }
+
+            const data = {
+                object: commentData.object,
+                text: commentData.text,
+                email: commentData.email,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            await db.collection('comments').add(data);
+            console.log('Commentaire ajouté avec succès');
+            return true;
+        } catch (error) {
+            console.error("Erreur lors de l'ajout du commentaire:", error);
+            throw error;
+        }
+    }
 } 

@@ -1205,6 +1205,7 @@ class HangmanGame {
         this.initModal();
 
         this.loadWordsFromFirebase();
+        this.initCommentModal();
     }
 
     async loadWordsFromFirebase() {
@@ -1584,6 +1585,60 @@ class HangmanGame {
         if (/^[A-Z]$/.test(letter)) {
             this.handleGuess(letter);
         }
+    }
+
+    initCommentModal() {
+        const commentButton = document.querySelector('.comment-btn');
+        const modal = document.getElementById('commentModal');
+        const closeBtn = modal.querySelector('.close');
+        const form = document.getElementById('commentForm');
+
+        if (!modal || !commentButton || !closeBtn || !form) {
+            console.error('Éléments de la modal commentaire non trouvés');
+            return;
+        }
+
+        // Ouvre la modal
+        commentButton.addEventListener('click', () => {
+            modal.style.display = 'block';
+            this.isModalOpen = true;
+        });
+
+        // Ferme la modal
+        const closeModal = () => {
+            modal.style.display = 'none';
+            this.isModalOpen = false;
+        };
+
+        closeBtn.addEventListener('click', closeModal);
+
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Gestion du formulaire
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const commentData = {
+                object: document.getElementById('commentObject').value,
+                text: document.getElementById('commentText').value,
+                email: document.getElementById('commentEmail').value
+            };
+
+            try {
+                const success = await FirebaseManager.addComment(commentData);
+                if (success) {
+                    alert('Commentaire ajouté avec succès !');
+                    form.reset();
+                    closeModal();
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Erreur lors de l\'ajout du commentaire');
+            }
+        });
     }
 }
 

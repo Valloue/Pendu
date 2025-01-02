@@ -633,22 +633,16 @@ form button[type="submit"]:hover {
     position: fixed;
     bottom: 20px;
     right: 20px;
-<<<<<<< HEAD
     transition: all 0.3s ease;
     box-shadow: 0 0 10px var(--neon-purple);
     padding: 0;
-=======
     border-radius: 50%;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 10px var(--neon-purple);
->>>>>>> cfc499d02c24a9d67bcf49c31befc1b4ce9160ad
 }
 
 .comment-btn:hover {
     background: var(--neon-purple);
     color: var(--dark-bg);
     box-shadow: 0 0 30px var(--neon-purple);
-<<<<<<< HEAD
     transform: translateY(-2px);
 }
 
@@ -660,8 +654,6 @@ form button[type="submit"]:hover {
 .comment-btn span {
     font-size: 36px;
     line-height: 1;
-=======
->>>>>>> cfc499d02c24a9d67bcf49c31befc1b4ce9160ad
 }
 
 /* Style pour la modal de commentaire */

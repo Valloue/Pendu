@@ -1,4 +1,5 @@
-git status
+git pull origin main
 git add .
-git commit -m "restaure"
+git commit -m "résolution des conflits"
 git push origin main
+git push -f origin main

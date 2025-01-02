@@ -1,0 +1,9 @@
+maintenant je souhaite que quand on ajoute un nouveau mot avec le bouton "add-btn" ca ajoute le mot dans firebase
+
+quand j'ajoute un nouveau mot, j'ai ces erreurs : 
+
+maintenant je souhaite que tu ajoute un bouton commentaire, ce qui permettra au joueur d'ajouter un commentaire. Dans firebase je souhaite que le commentaire soit ajouter dans une nouvelle collection nommé commentaire. Je souhaite que pour ajouter un commentaire il faut mettre un objet au commentaire, je commentaire en question, puis un email pour être contacté au besoin.
+
+non, il n'est toujours pas identique, est ce possible que ca soit parce que il est dans un fichier css diffèrent des autres ?
+
+Les boutons ne sont plus a la bonne place, le bouton commentaire n'est pas carré et le bouton "+" n'a plus le + a l'intérieur

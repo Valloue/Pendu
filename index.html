@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu du Pendu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="cyberpunk-theme">
+    <div class="game-container">
+        <h1>Le Jeu du Pendu</h1>
+        
+        <div class="difficulty-container">
+            <button class="difficulty-btn" data-difficulty="facile">Facile</button>
+            <button class="difficulty-btn" data-difficulty="intermediaire">Intermédiaire</button>
+            <button class="difficulty-btn" data-difficulty="difficile">Difficile</button>
+            <button class="difficulty-btn" data-difficulty="impossible">Impossible</button>
+        </div>
+
+        <canvas id="hangmanCanvas" width="400" height="300"></canvas>
+        
+        <div id="wordDisplay"></div>
+        
+        <div class="game-info">
+            <p>Essais restants : <span id="attempts">6</span></p>
+            <p>Lettres utilisées : <span id="usedLetters"></span></p>
+        </div>
+
+        <div class="button-container">
+            <button class="hint-btn" id="hintButton"><span>Obtenir un indice</span></button>
+            <button class="add-btn" id="addButton">+</button>
+            <button class="comment-btn" aria-label="Ajouter un commentaire">
+                <span>💭</span>
+            </button>
+        </div>
+        <div id="hintText"></div>
+
+        <div id="addWordModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2>Ajouter un nouveau mot</h2>
+                <form id="addWordForm">
+                    <input type="text" id="newWord" placeholder="Nouveau mot" required>
+                    <input type="text" id="hint1" placeholder="Premier exemple" required>
+                    <input type="text" id="hint2" placeholder="Deuxième exemple" required>
+                    <input type="text" id="hint3" placeholder="Troisième exemple" required>
+                    <select id="difficulty" required aria-label="Sélectionner le niveau de difficulté">
+                        <option value="">Sélectionner le niveau</option>
+                        <option value="facile">Facile</option>
+                        <option value="intermediaire">Intermédiaire</option>
+                        <option value="difficile">Difficile</option>
+                        <option value="impossible">Impossible</option>
+                    </select>
+                    <button type="submit">Sauvegarder</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="keyboard-row"></div>
+
+        <!-- Modal pour les commentaires -->
+        <div id="commentModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Ajouter un commentaire</h2>
+                <form id="commentForm">
+                    <input type="text" id="commentObject" placeholder="Objet du commentaire" required>
+                    <textarea id="commentText" placeholder="Votre commentaire" required></textarea>
+                    <input type="email" id="commentEmail" placeholder="Votre email" required>
+                    <button type="submit">Envoyer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/game.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+</body>
+</html> 

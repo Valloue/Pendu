@@ -844,3 +844,74 @@ body {
         letter-spacing: 3px;
     }
 }
+
+/* Styles spécifiques pour le mode portrait (vertical) */
+@media screen and (max-width: 768px) and (orientation: portrait) {
+    .game-container {
+        padding: 10px 5px;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    h1 {
+        font-size: 1.5em;
+        margin: 5px 0;
+    }
+
+    .difficulty-container {
+        margin: 5px 0;
+    }
+
+    .difficulty-btn {
+        padding: 5px 10px;
+        font-size: 0.8em;
+    }
+
+    canvas {
+        max-height: 30vh; /* Limite la hauteur du canvas */
+        width: auto;
+        margin: 5px auto;
+    }
+
+    #wordDisplay {
+        font-size: 1.5em;
+        margin: 10px 0;
+    }
+
+    .keyboard {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 5px;
+        background: var(--dark-bg);
+    }
+
+    .keyboard-row {
+        margin: 1px 0;
+    }
+
+    .key {
+        width: 25px;
+        height: 25px;
+        font-size: 12px;
+        margin: 1px;
+    }
+
+    .button-container {
+        margin-bottom: 120px; /* Espace réduit pour le clavier */
+    }
+
+    .hint-btn, .add-btn, .comment-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+
+    #usedLetters {
+        font-size: 0.8em;
+        margin: 5px 0;
+    }
+}

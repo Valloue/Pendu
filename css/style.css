@@ -848,11 +848,48 @@ body {
 /* Styles spécifiques pour le mode portrait (vertical) */
 @media screen and (max-width: 768px) and (orientation: portrait) {
     .game-container {
-        padding: 10px 5px;
         height: 100vh;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        justify-content: flex-start;
+        padding-bottom: 20px;
+    }
+
+    .keyboard {
+        position: relative;
+        bottom: auto;
+        left: auto;
+        width: 100%;
+        background: var(--dark-bg);
+        padding: 5px;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        margin-top: auto;
+    }
+
+    .keyboard-row {
+        display: flex;
+        justify-content: center;
+        gap: 3px;
+        margin: 0;
+        padding: 0;
+    }
+
+    .key {
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+        margin: 0;
+        padding: 0;
+    }
+
+    .button-container {
+        margin-bottom: 20px;
+    }
+
+    .game-container {
+        padding-bottom: 20px;
     }
 
     h1 {
@@ -878,30 +915,6 @@ body {
     #wordDisplay {
         font-size: 1.5em;
         margin: 10px 0;
-    }
-
-    .keyboard {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        padding: 5px;
-        background: var(--dark-bg);
-    }
-
-    .keyboard-row {
-        margin: 1px 0;
-    }
-
-    .key {
-        width: 25px;
-        height: 25px;
-        font-size: 12px;
-        margin: 1px;
-    }
-
-    .button-container {
-        margin-bottom: 120px; /* Espace réduit pour le clavier */
     }
 
     .hint-btn, .add-btn, .comment-btn {

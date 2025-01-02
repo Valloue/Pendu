@@ -59,25 +59,7 @@ body.cyberpunk-theme::after {
 /* Coins cyberpunk sur le container */
 .game-container::before,
 .game-container::after {
-  content: '';
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--neon-pink);
-}
-
-.game-container::before {
-  top: -2px;
-  left: -2px;
-  border-right: none;
-  border-bottom: none;
-}
-
-.game-container::after {
-  bottom: -2px;
-  right: -2px;
-  border-left: none;
-  border-top: none;
+  display: none;
 }
 
 h1 {
